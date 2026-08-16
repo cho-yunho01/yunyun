@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Builder
@@ -20,9 +22,9 @@ public class Menu {
     private String name;
 
     // 음식 가격
-    private Integer price;
+    private BigDecimal price;
 
-    // 음실 설명
+    // 음식 설명
     private String introduction;
 
     @ManyToOne
