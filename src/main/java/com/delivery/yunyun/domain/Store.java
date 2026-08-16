@@ -34,4 +34,7 @@ public class Store {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    // 점주 ID
+    private Long ownerId;
+
 }

@@ -20,7 +20,7 @@ public class CartItem {
     private Cart cart;
 
     //메뉴ID
-    @OneToMany
+    @ManyToOne
     private Menu menu;
 
     //수량

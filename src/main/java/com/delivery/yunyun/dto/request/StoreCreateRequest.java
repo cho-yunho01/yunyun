@@ -1,4 +1,4 @@
-package com.delivery.yunyun.controller.dto.request;
+package com.delivery.yunyun.dto.request;
 
 public record StoreCreateRequest (
         Long ownerId,

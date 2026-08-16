@@ -1,9 +1,9 @@
 package com.delivery.yunyun.controller;
 
-import com.delivery.yunyun.controller.dto.request.StoreCreateRequest;
-import com.delivery.yunyun.controller.dto.request.StoreUpdateRequest;
-import com.delivery.yunyun.controller.dto.response.StoreMenuListResponse;
-import com.delivery.yunyun.controller.service.StoreService;
+import com.delivery.yunyun.dto.request.StoreCreateRequest;
+import com.delivery.yunyun.dto.request.StoreUpdateRequest;
+import com.delivery.yunyun.dto.response.StoreMenuListResponse;
+import com.delivery.yunyun.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +29,9 @@ public class StoreController {
         return ResponseEntity.ok(menus);
     }
     // 3. 조건 검색 기능 구현
-    @GetMapping("/stores/{storeId}/menus/{menuId}")
-    public ResponseEntity<StoreMenuListResponse> getMenu(@PathVariable Long storeId, @PathVariable Long menuId){
-        StoreMenuListResponse menu = storeService.getMenu(storeId, menuId);
+    @GetMapping("/stores/{storeId}/menus/{menuName}")
+    public ResponseEntity<StoreMenuListResponse> getMenu(@PathVariable Long storeId, @PathVariable String menuName){
+        StoreMenuListResponse menu = storeService.getMenu(storeId, menuName);
         return ResponseEntity.ok(menu);
     }
     // 4. 가게 정보 수정
@@ -49,7 +49,4 @@ public class StoreController {
         storeService.deleteStore(storeId);
         return ResponseEntity.ok().build();
     }
-
-
-
 }

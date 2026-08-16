@@ -25,7 +25,6 @@ public class Menu {
     // 음실 설명
     private String introduction;
 
-    // 가맹점 id
     @ManyToOne
     private Store store;
 
