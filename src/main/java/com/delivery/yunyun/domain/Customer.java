@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Builder
@@ -27,6 +29,9 @@ public class Customer {
 
     // 사용자 PW
     private String password;
+
+    // 사용자 잔액
+    private BigDecimal balance;
 
 
 }
