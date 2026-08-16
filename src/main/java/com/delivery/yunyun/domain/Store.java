@@ -25,7 +25,10 @@ public class Store {
     private String storeName;
 
     // 가게 전화번호
-    private Integer storeNumber;
+    private String storeNumber;
+
+    // 가게 주소
+    private String address;
 
     // 가게 카테고리
     @Enumerated(EnumType.STRING)

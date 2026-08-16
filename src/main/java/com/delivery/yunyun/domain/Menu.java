@@ -20,7 +20,10 @@ public class Menu {
     private String name;
 
     // 음식 가격
-    private int price;
+    private Integer price;
+
+    // 음실 설명
+    private String introduction;
 
     // 가맹점 id
     @ManyToOne
