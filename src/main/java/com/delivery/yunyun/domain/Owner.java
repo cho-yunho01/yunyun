@@ -19,6 +19,12 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ownerId;
 
+    // 사용자 ID
+    private String userId;
+
+    // 사용자 PW
+    private String password;
+
     //점주 이름
     private String name;
 

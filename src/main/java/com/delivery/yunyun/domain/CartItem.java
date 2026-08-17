@@ -19,7 +19,7 @@ public class CartItem {
     @ManyToOne
     private Cart cart;
 
-    //메뉴ID
+    // 메뉴
     @ManyToOne
     private Menu menu;
 
