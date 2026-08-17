@@ -5,6 +5,7 @@ import com.delivery.yunyun.domain.CartItem;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.domain.Menu;
 import com.delivery.yunyun.dto.request.ItemAddRequest;
+import com.delivery.yunyun.dto.response.CartResponse;
 import com.delivery.yunyun.repository.CartItemRepository;
 import com.delivery.yunyun.repository.CartRepository;
 import com.delivery.yunyun.repository.CustomerRepository;
@@ -72,5 +73,26 @@ public class CartService {
         }
 
         return totalPrice;
+    }
+
+    public List<CartResponse> getCart(Long customerId) {
+        // 1.사용자 ID를 가지고 해당 카트 객체 필요
+        Cart cart = cartRepository.findByCustomer_CustomerId(customerId)
+                .orElseThrow(() -> new RuntimeException("해당 사용자가 존재하지 않습니다."));
+
+        // 2. 카트 객체를 가지고 카트 아이템 객체 필요
+        List<CartItem> cartItemList = cart.getCartItemList();
+
+        // 3. 카트 아이템 객체를 통해 해당 메뉴 객체를 필요
+        return cartItemList.stream().map(
+                item -> CartResponse.builder()
+                        .cartItemId(item.getCartItemId())
+                        .name(item.getMenu().getName())
+                        .price(item.getMenu().getPrice())
+                        .quantity(item.getQuantity())
+                        .build()
+        ).toList();
+
+
     }
 }

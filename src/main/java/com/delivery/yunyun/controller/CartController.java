@@ -1,12 +1,14 @@
 package com.delivery.yunyun.controller;
 
 import com.delivery.yunyun.dto.request.ItemAddRequest;
+import com.delivery.yunyun.dto.response.CartResponse;
 import com.delivery.yunyun.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -29,11 +31,15 @@ public class CartController {
     }
 
     // 3. 장바구니 조회
-    public void getCart() {}
+    @GetMapping("/getCart/{customerId}")
+    public ResponseEntity<List<CartResponse>> getCart(@PathVariable Long customerId) {
+        List<CartResponse> menuList = cartService.getCart(customerId);
+        return ResponseEntity.ok(menuList);
+    }
 
     // 4. 장바구니 상품 삭제
     public void deleteItem() {}
 
     // 5. 장바구니 상품 수정 (수량)
-    public void updateItemQuantity() {}
+    public void updateItemQuantity(@PathVariable Long cartItemId) {}
 }
