@@ -4,6 +4,7 @@ import com.delivery.yunyun.domain.Cart;
 import com.delivery.yunyun.domain.CartItem;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.domain.Menu;
+import com.delivery.yunyun.dto.request.CartItemRequest;
 import com.delivery.yunyun.dto.request.ItemAddRequest;
 import com.delivery.yunyun.dto.response.CartResponse;
 import com.delivery.yunyun.repository.CartItemRepository;
@@ -26,10 +27,10 @@ public class CartService {
 
     public void addItem(ItemAddRequest request) {
         Customer customer = customerRepository.findById(request.customerId())
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("사용자가 존재하지 않습니다."));
 
         Menu menu = menuRepository.findById(request.menuId())
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("해당하는 메뉴가 존재하지 않습니다."));
 
         Cart cart = cartRepository.findByCustomer_CustomerId(request.customerId())
                 .orElseGet(() -> cartRepository.save(
@@ -54,7 +55,6 @@ public class CartService {
         }
 
         cartItemRepository.save(cartItem);
-
 
     }
 
@@ -94,5 +94,18 @@ public class CartService {
         ).toList();
 
 
+    }
+
+    public void deleteItem(Long cartItemId) {
+        cartRepository.deleteById(cartItemId);
+    }
+
+    public void updateItemQuantity(CartItemRequest request) {
+        CartItem cartItem = cartItemRepository.findById(request.cartItemId())
+                .orElseThrow();
+
+        cartItem.setQuantity(request.quantity());
+
+        cartItemRepository.save(cartItem);
     }
 }
