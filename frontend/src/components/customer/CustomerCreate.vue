@@ -25,7 +25,7 @@ const requestAPI = async () => {
         사용자 이름을 입력하세요.
         <input type = "text" v-model="customer.name" /> <br />
         사용자 잔액을 입력하세요.
-        <input type = "text" v-model="customer.balance" />
+        <input type = "number" v-model="customer.balance" />
         <button @click="requestAPI">전송</button>
     </div>
 </template>

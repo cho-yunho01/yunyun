@@ -14,6 +14,7 @@ public class MenuController {
     // 1. 상품 등록
     @PostMapping("/create")
     public ResponseEntity<Void> createMenu(@RequestBody MenuRequest request){
+        // 사용자 ID를 받고 그 ID로 회사 ID를 받도록 수정해야할 듯
         menuService.createMenu(request);
         return ResponseEntity.ok().build();
     }
@@ -24,7 +25,7 @@ public class MenuController {
         return ResponseEntity.ok().build();
     }
     // 3. 상품 수정
-    @PatchMapping("/update/{menuId}")
+    @PutMapping("/update/{menuId}")
     public  ResponseEntity<Void> updateMenu(
             @PathVariable Long menuId,
             @RequestBody MenuRequest request
