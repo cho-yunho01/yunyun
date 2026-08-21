@@ -1,8 +1,8 @@
 package com.delivery.yunyun.service;
 
 import com.delivery.yunyun.domain.Owner;
-import com.delivery.yunyun.dto.request.StoreCreateRequest;
-import com.delivery.yunyun.dto.request.StoreUpdateRequest;
+import com.delivery.yunyun.dto.request.store.StoreCreateRequest;
+import com.delivery.yunyun.dto.request.store.StoreUpdateRequest;
 import com.delivery.yunyun.dto.response.StoreMenuListResponse;
 import com.delivery.yunyun.repository.MenuRepository;
 import com.delivery.yunyun.repository.OwnerRepository;

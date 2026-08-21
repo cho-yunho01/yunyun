@@ -1,6 +1,6 @@
 package com.delivery.yunyun.controller;
 
-import com.delivery.yunyun.dto.request.CustomerRequest;
+import com.delivery.yunyun.dto.request.customer.CustomerRequest;
 import com.delivery.yunyun.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.delivery.yunyun.service;
 
 import com.delivery.yunyun.domain.Customer;
-import com.delivery.yunyun.dto.request.CustomerRequest;
+import com.delivery.yunyun.dto.request.customer.CustomerRequest;
 import com.delivery.yunyun.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
