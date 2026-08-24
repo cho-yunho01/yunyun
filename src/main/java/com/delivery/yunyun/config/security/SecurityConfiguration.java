@@ -27,10 +27,10 @@ public class SecurityConfiguration {
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(AbstractHttpConfigurer::disable)
 
-                .authorizeHttpRequests(authorize ->
-                        authorize
-                                .requestMatchers("/").permitAll()
-                                .anyRequest().hasRole("ADMIN"))
+//                .authorizeHttpRequests(authorize ->
+//                        authorize
+//                                .requestMatchers("/").permitAll()
+//                                .anyRequest().hasRole("ADMIN"))
                 .formLogin(AbstractHttpConfigurer::disable)
 
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)

@@ -1,22 +1,30 @@
 package com.delivery.yunyun.service;
 
+import com.delivery.yunyun.config.security.JwtTokenProvider;
 import com.delivery.yunyun.domain.Customer;
+import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
 import com.delivery.yunyun.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public void customerCreate(CustomerRequest request) {
         Customer customer = Customer.builder()
                 .name(request.name())
                 .userId(request.userId())
-                .password(request.password())
+                .password(passwordEncoder.encode(request.password()))
                 .balance(request.balance())
+                .roles(Collections.singletonList("ROLE_USER"))
                 .build();
         customerRepository.save(customer);
     }
@@ -46,5 +54,13 @@ public class CustomerService {
 
     public void customerDelete(Long customerId) {
         customerRepository.deleteById(customerId);
+    }
+
+    public String login(CustomerLoginRequest request) {
+        Customer customer = customerRepository.findByUserId(request.userId());
+        if(!passwordEncoder.matches(request.password(), customer.getPassword())){
+            throw new RuntimeException();
+        }
+        return jwtTokenProvider.createToken(request.userId(), customer.getRoles());
     }
 }

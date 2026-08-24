@@ -1,5 +1,6 @@
 package com.delivery.yunyun.controller;
 
+import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
 import com.delivery.yunyun.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,12 @@ public class CustomerController {
     private ResponseEntity<Void> customerDelete(@PathVariable Long customerId){
         customerService.customerDelete(customerId);
         return ResponseEntity.ok().build();
+    }
+
+    // 4. 사용자 로그인
+    @PostMapping("/login")
+    private ResponseEntity<String> login(@RequestBody CustomerLoginRequest request){
+        String token = customerService.login(request);
+        return ResponseEntity.ok(token);
     }
 }
