@@ -5,6 +5,9 @@ spring:
     password: yunyun
     driver-class-name: org.mariadb.jdbc.Driver
 
+  jwt:
+    secret: test
+
   jpa:
     hibernate:
       ddl-auto: update
