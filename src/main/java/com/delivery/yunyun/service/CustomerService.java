@@ -4,11 +4,14 @@ import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
 import com.delivery.yunyun.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerService {
+public class CustomerService implements UserDetailsService {
     private final CustomerRepository customerRepository;
 
     public void customerCreate(CustomerRequest request) {
@@ -46,5 +49,11 @@ public class CustomerService {
 
     public void customerDelete(Long customerId) {
         customerRepository.deleteById(customerId);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Customer customer = customerRepository.findByUserId(username);
+        return customer;
     }
 }
