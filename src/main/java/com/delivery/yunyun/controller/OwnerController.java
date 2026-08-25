@@ -4,6 +4,7 @@ import com.delivery.yunyun.dto.request.OwnerRequest;
 import com.delivery.yunyun.service.OwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,9 +20,9 @@ public class OwnerController {
     }
 
     // 2. 사용자 수정
-    @PutMapping("/update/{ownerId}")
+    @PutMapping("/update")
     private ResponseEntity<Void> ownerUpdate(
-            @PathVariable Long ownerId,
+            @AuthenticationPrincipal Long ownerId,
             @RequestBody OwnerRequest request
     ){
         ownerService.ownerUpdate(ownerId, request);

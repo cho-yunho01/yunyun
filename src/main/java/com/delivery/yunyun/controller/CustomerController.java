@@ -23,9 +23,9 @@ public class CustomerController {
     }
 
     // 2. 사용자 수정
-    @PutMapping("/update/{customerId}")
+    @PutMapping("/update")
     private ResponseEntity<Void> customerUpdate(
-            @PathVariable Long customerId,
+            @AuthenticationPrincipal Long customerId,
             @RequestBody CustomerRequest request
     ){
         customerService.customerUpdate(customerId, request);
@@ -33,8 +33,8 @@ public class CustomerController {
     }
 
     // 3. 사용자 삭제
-    @DeleteMapping("/delete/{customerId}")
-    private ResponseEntity<Void> customerDelete(@PathVariable Long customerId){
+    @DeleteMapping("/delete")
+    private ResponseEntity<Void> customerDelete(@AuthenticationPrincipal Long customerId){
         customerService.customerDelete(customerId);
         return ResponseEntity.ok().build();
     }
