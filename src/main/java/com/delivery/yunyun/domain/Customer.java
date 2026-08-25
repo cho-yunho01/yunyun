@@ -40,6 +40,7 @@ public class Customer implements UserDetails {
     // 사용자 잔액
     private BigDecimal balance;
 
+    @Builder.Default
     private List<String> roles = new ArrayList<>();
 
     @Override

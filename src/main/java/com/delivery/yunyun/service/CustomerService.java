@@ -59,7 +59,7 @@ public class CustomerService {
     public String login(CustomerLoginRequest request) {
         Customer customer = customerRepository.findByUserId(request.userId());
         if(!passwordEncoder.matches(request.password(), customer.getPassword())){
-            throw new RuntimeException();
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
         return jwtTokenProvider.createToken(request.userId(), customer.getRoles());
     }

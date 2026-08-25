@@ -1,10 +1,12 @@
 package com.delivery.yunyun.controller;
 
+import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
 import com.delivery.yunyun.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,5 +44,12 @@ public class CustomerController {
     private ResponseEntity<String> login(@RequestBody CustomerLoginRequest request){
         String token = customerService.login(request);
         return ResponseEntity.ok(token);
+    }
+
+    // 테스트
+    @GetMapping("/id")
+    public ResponseEntity<Long> getId(@AuthenticationPrincipal Customer customer){
+        System.out.println(customer.getName());
+        return ResponseEntity.ok(customer.getCustomerId());
     }
 }
