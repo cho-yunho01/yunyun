@@ -3,6 +3,7 @@ package com.delivery.yunyun.controller;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
+import com.delivery.yunyun.dto.response.CustomerInfoResponse;
 import com.delivery.yunyun.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,12 @@ public class CustomerController {
         return ResponseEntity.ok(token);
     }
 
+    // 5. 사용자 정보
+    @GetMapping("/info")
+    private ResponseEntity<CustomerInfoResponse> customerInfo(@AuthenticationPrincipal Customer customer){
+        CustomerInfoResponse customerInfoResponse = customerService.customerInfo(customer);
+        return ResponseEntity.ok(customerInfoResponse);
+    }
     // 테스트
     @GetMapping("/id")
     public ResponseEntity<Long> getId(@AuthenticationPrincipal Customer customer){

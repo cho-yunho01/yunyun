@@ -4,6 +4,7 @@ import com.delivery.yunyun.config.security.JwtTokenProvider;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
+import com.delivery.yunyun.dto.response.CustomerInfoResponse;
 import com.delivery.yunyun.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,5 +63,14 @@ public class CustomerService {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
         return jwtTokenProvider.createToken(request.userId(), customer.getRoles());
+    }
+
+    public CustomerInfoResponse customerInfo(Customer customer) {
+        return CustomerInfoResponse.builder()
+                .name(customer.getName())
+                .userId(customer.getUserId())
+                .balance(customer.getBalance())
+                .roles(customer.getRoles())
+                .build();
     }
 }
