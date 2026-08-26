@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 @Builder
 public record StoreMenuListResponse(
+        Long menuId,
         String menuName,
         BigDecimal price,
         String introduction

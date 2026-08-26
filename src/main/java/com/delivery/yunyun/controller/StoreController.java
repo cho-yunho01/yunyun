@@ -49,4 +49,6 @@ public class StoreController {
         storeService.deleteStore(storeId);
         return ResponseEntity.ok().build();
     }
+    
+    // 6. 가게 검색
 }

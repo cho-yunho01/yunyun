@@ -40,6 +40,7 @@ public class StoreService {
         return menuList.stream().map(
                 (menu ->
                         StoreMenuListResponse.builder()
+                                .menuId(menu.getMenuId())
                                 .menuName(menu.getName())
                                 .price(menu.getPrice())
                                 .introduction(menu.getIntroduction())
@@ -50,6 +51,7 @@ public class StoreService {
     public StoreMenuListResponse getMenu(Long storeId, String menuName) {
         Menu menu = menuRepository.findAllByStore_StoreIdAndName(storeId,menuName);
         return StoreMenuListResponse.builder()
+                .menuId(menu.getMenuId())
                 .menuName(menu.getName())
                 .price(menu.getPrice())
                 .introduction(menu.getIntroduction())

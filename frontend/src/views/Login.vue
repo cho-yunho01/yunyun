@@ -101,7 +101,7 @@ const requestAPI = async () => {
 
                 <p>
                     {{ isConvert
-                        ? 'YUM YUM에서 맛있는 음식을 만나보세요.'
+                        ? 'YUN YUN에서 맛있는 음식을 만나보세요.'
                         : '가맹점 관리 페이지에 로그인해주세요.'
                     }}
                 </p>

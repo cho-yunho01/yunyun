@@ -1,9 +1,13 @@
 <script setup>
 import AppHeader from '@/components/common/AppHeader.vue';
 import { ref } from 'vue';
+import api from '@/api/axios';
 
 const storeName = ref("");
 
+const seartchStore = async () => {
+    
+}
 
 </script>
 
@@ -14,6 +18,8 @@ const storeName = ref("");
         <div class="search">
             음식점 검색 창
             <input type = "text" v-model="storeName">
+            <button @click="seartchStore">검색</button>
+            <!-- 해당 음식점 페이지로 이동 -->
 
         </div>
 
