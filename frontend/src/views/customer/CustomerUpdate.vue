@@ -1,15 +1,15 @@
 <script setup>
+import Update from '@/components/Update.vue';
 import axios from 'axios';
-import {reactive, ref} from 'vue';
+import {ref} from 'vue';
 
-const customerRequest = reactive({
-    name: "",
-    userId: "",
-    password: "",
-    balance: ""
-});
 
+const customerRequest = ref(null);
 const customerId = ref(0);
+
+const responseCustomer = (customer) => {
+    customerRequest.value = customer;
+}
 
 const requestAPI = async () =>{
     // 현재 로그인한 상태의 사용자 ID를 넘겨야함
@@ -21,14 +21,6 @@ const requestAPI = async () =>{
 </script>
 
 <template>
-    <div>
-        사용자 이름을 넣으세요.
-        <input type = "text" v-model="customerRequest.name"/> <br/>
-        사용자 ID를 넣으세요.
-        <input type = "text" v-model="customerRequest.userId"><br/>
-        사용자 PW를 넣으세요.
-        <input type = "password" v-model="customerRequest.password"><br />
-        사용자 잔여금액을 넣으세요.
-        <input type = "number" v-model="customerRequest.balance"><br />
-    </div>
+    <Update @customerRequest="responseCustomer" />
+    <button @click="requestAPI">수정</button>
 </template>
