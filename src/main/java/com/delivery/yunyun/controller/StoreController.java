@@ -7,6 +7,7 @@ import com.delivery.yunyun.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public class StoreController {
     private final StoreService storeService;
     // 1. 점주 id 입력받아 가게 등록하기 (유저 아이디)
     @PostMapping("/stores")
-    public ResponseEntity<Void> createStore(@RequestBody StoreCreateRequest request){
-        storeService.createStore(request);
+    public ResponseEntity<Void> createStore(@AuthenticationPrincipal Long ownerId, @RequestBody StoreCreateRequest request){
+        storeService.createStore(ownerId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     // 2. 해당 가게 메뉴 전체 보여주기
