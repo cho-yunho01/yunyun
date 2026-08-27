@@ -21,16 +21,16 @@ public class StoreService {
     private final MenuRepository menuRepository;
     private final OwnerRepository ownerRepository;
 
-    public void createStore(StoreCreateRequest request) {
+    public void createStore(Long ownerId, StoreCreateRequest request) {
 
-        Owner owner = ownerRepository.findById(request.ownerId())
+        Owner owner = ownerRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("사용자가 존재하지 않습니다."));
 
         Store store = Store.builder()
                 .storeName(request.storeName())
                 .storeNumber(request.storeNumber())
                 .address(request.address())
-                .ownerId(request.ownerId())
+                .ownerId(ownerId)
                 .build();
         storeRepository.save(store);
     }
