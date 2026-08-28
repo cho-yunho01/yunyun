@@ -24,9 +24,9 @@ public class StoreController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     // 2. 해당 가게 메뉴 전체 보여주기
-    @GetMapping("/stores/{storeId}/menus")
-    public ResponseEntity<List<StoreMenuListResponse>> getMenus(@PathVariable Long storeId){
-        List<StoreMenuListResponse> menus = storeService.getMenus(storeId);
+    @GetMapping("/stores/menus")
+    public ResponseEntity<List<StoreMenuListResponse>> getMenus(@AuthenticationPrincipal Long ownerId){
+        List<StoreMenuListResponse> menus = storeService.getMenus(ownerId);
         return ResponseEntity.ok(menus);
     }
     // 3. 조건 검색 기능 구현
@@ -52,4 +52,9 @@ public class StoreController {
     }
     
     // 6. 가게 검색
+    @GetMapping("/find/stores/{storeName}")
+    public ResponseEntity<Long> findStore(@PathVariable String storeName ){
+        Long storeId = storeService.findStore(storeName);
+        return ResponseEntity.ok(storeId);
+    }
 }

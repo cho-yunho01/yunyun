@@ -1,12 +1,15 @@
 <script setup>
 import AppHeader from '@/components/common/AppHeader.vue';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'
 import api from '@/api/axios';
 
 const storeName = ref("");
-
+const router = useRouter();
 const seartchStore = async () => {
-    
+    const url = `/api/find/stores/${storeName.value}`
+    const response = await api.get(url);
+    router.push(`/api/store/${response.data}`)
 }
 
 </script>
@@ -19,7 +22,6 @@ const seartchStore = async () => {
             음식점 검색 창
             <input type = "text" v-model="storeName">
             <button @click="seartchStore">검색</button>
-            <!-- 해당 음식점 페이지로 이동 -->
 
         </div>
 

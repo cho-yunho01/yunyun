@@ -35,7 +35,8 @@ public class StoreService {
         storeRepository.save(store);
     }
 
-    public List<StoreMenuListResponse> getMenus(Long storeId) {
+    public List<StoreMenuListResponse> getMenus(Long ownerId) {
+        Long storeId = ownerRepository.findByStoreId(ownerId);
         List<Menu> menuList = menuRepository.findAllByStore_StoreId(storeId);
         return menuList.stream().map(
                 (menu ->
@@ -81,5 +82,10 @@ public class StoreService {
 
     public void deleteStore(Long storeId) {
         storeRepository.deleteById(storeId);
+    }
+
+    public Long findStore(String storeName) {
+        Store store = storeRepository.findByStoreName(storeName);
+        return store.getStoreId();
     }
 }
