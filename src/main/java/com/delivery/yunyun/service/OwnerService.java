@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 @Service
 @RequiredArgsConstructor
 public class OwnerService {
@@ -20,7 +22,8 @@ public class OwnerService {
         Owner owner = Owner.builder()
                 .name(request.name())
                 .userId(request.userId())
-                .password(request.password())
+                .password(passwordEncoder.encode(request.password()))
+                .roles(Collections.singletonList("ROLE_OWNER"))
                 .build();
         ownerRepository.save(owner);
     }

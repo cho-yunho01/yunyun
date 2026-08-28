@@ -72,7 +72,7 @@ const requestAPI = async () => {
 
             <!-- 로고 / 제목 -->
             <div class="logo-area">
-                <div class="logo-icon">🍔</div>
+                <div class="logo-icon">🍕</div>
                 <h1>YUN YUN</h1>
                 <p>맛있는 한 끼, 간편하게 배달하세요</p>
             </div>
@@ -145,7 +145,7 @@ const requestAPI = async () => {
 
             <div class="login-footer">
                 <span>아직 회원이 아니신가요?</span>
-                <span class="signup">회원가입</span>
+                <router-link to ="/api/create" class = "signup">회원가입</router-link>
             </div>
 
         </div>

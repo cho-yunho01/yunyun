@@ -55,7 +55,10 @@ public class JwtTokenProvider {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        return claims.get("roles", List.class);
+        return ((List<?>)claims.get("roles"))
+                .stream()
+                .map(String::valueOf)
+                .toList();
     }
 
     public String getUsername(String token){

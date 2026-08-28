@@ -31,6 +31,11 @@ public class SecurityConfiguration {
                        authorize
                               .requestMatchers("/api/customer/login").permitAll()
                                .requestMatchers("/api/owner/login").permitAll()
+                               .requestMatchers("/api/create").permitAll()
+                               .requestMatchers("/api/customer/create").permitAll()
+                               .requestMatchers("/api/owner/create").permitAll()
+                               .requestMatchers("/api/owner/login").permitAll()
+                               .requestMatchers("/api/customer/login").permitAll()
                                .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
