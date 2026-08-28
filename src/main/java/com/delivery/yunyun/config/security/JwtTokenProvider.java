@@ -1,5 +1,7 @@
 package com.delivery.yunyun.config.security;
 
+import com.delivery.yunyun.service.CustomerCustomService;
+import com.delivery.yunyun.service.OwnerCustomService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -22,7 +23,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
-    private final UserDetailsService userDetailsService;
+    private final CustomerCustomService customerCustomService;
+    private final OwnerCustomService ownerCustomService;
 
     @Value("${spring.jwt.secret}")
     private String secret;
@@ -47,6 +49,15 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public List<String> getRoles(String token){
+        Claims claims = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return claims.get("roles", List.class);
+    }
+
     public String getUsername(String token){
         return Jwts.parser()
                 .verifyWith(secretKey)
@@ -57,7 +68,20 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token){
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
+        String userName = getUsername(token);
+        List<String> roles = getRoles(token);
+        UserDetails userDetails;
+
+        if(roles.contains("ROLE_USER")){
+            userDetails = customerCustomService.loadUserByUsername(userName);
+        }
+        else if(roles.contains("ROLE_OWNER")){
+            userDetails = ownerCustomService.loadUserByUsername(userName);
+        }
+        else{
+            throw new RuntimeException("회원을 찾을 수 없습니다.");
+        }
+
         return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
     }
 
