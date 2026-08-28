@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
     Long findByStoreId(Long ownerId);
 
-    UserDetails findByUserId(String username);
+    Owner findByUserId(String username);
 }
