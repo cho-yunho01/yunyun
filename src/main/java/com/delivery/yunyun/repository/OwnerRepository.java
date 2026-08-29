@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface OwnerRepository extends JpaRepository<Owner, Long> {
     Long findByStoreId(Long ownerId);
 
-    Owner findByUserId(String username);
+    Optional<Owner> findByUserId(String username);
 }

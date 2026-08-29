@@ -52,7 +52,8 @@ public class OwnerService {
     }
 
     public String login(OwnerLoginRequest request) {
-        Owner owner = ownerRepository.findByUserId(request.userId());
+        Owner owner = ownerRepository.findByUserId(request.userId())
+                .orElseThrow(() -> new RuntimeException("해당 사용자는 존재하지 않습니다."));
 
         if(!passwordEncoder.matches(request.password(), owner.getPassword())){
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");

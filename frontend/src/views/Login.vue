@@ -1,6 +1,6 @@
 <script setup>
 import api from "@/api/axios"
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -56,9 +56,9 @@ const requestAPI = async () => {
 
 
     if (isConvert.value) {
-        router.push("/api/customer/home")
+        router.push("/customer/home")
     } else {
-        router.push("/api/owner/home")
+        router.push("/owner/home")
     }
     
 };

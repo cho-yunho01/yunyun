@@ -1,5 +1,6 @@
 package com.delivery.yunyun.controller;
 
+import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.dto.request.store.StoreCreateRequest;
 import com.delivery.yunyun.dto.request.store.StoreUpdateRequest;
 import com.delivery.yunyun.dto.response.StoreMenuListResponse;
@@ -19,14 +20,14 @@ public class StoreController {
     private final StoreService storeService;
     // 1. 점주 id 입력받아 가게 등록하기 (유저 아이디)
     @PostMapping("/stores")
-    public ResponseEntity<Void> createStore(@AuthenticationPrincipal Long ownerId, @RequestBody StoreCreateRequest request){
-        storeService.createStore(ownerId, request);
+    public ResponseEntity<Void> createStore(@AuthenticationPrincipal Owner owner, @RequestBody StoreCreateRequest request){
+        storeService.createStore(owner, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     // 2. 해당 가게 메뉴 전체 보여주기
     @GetMapping("/stores/menus")
-    public ResponseEntity<List<StoreMenuListResponse>> getMenus(@AuthenticationPrincipal Long ownerId){
-        List<StoreMenuListResponse> menus = storeService.getMenus(ownerId);
+    public ResponseEntity<List<StoreMenuListResponse>> getMenus(@AuthenticationPrincipal Owner owner){
+        List<StoreMenuListResponse> menus = storeService.getMenus(owner);
         return ResponseEntity.ok(menus);
     }
     // 3. 조건 검색 기능 구현

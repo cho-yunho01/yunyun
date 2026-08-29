@@ -70,7 +70,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
-    public Authentication getAuthentication(String token){
+    public Authentication  getAuthentication(String token){
         String userName = getUsername(token);
         List<String> roles = getRoles(token);
         UserDetails userDetails;

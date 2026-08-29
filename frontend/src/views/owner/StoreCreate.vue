@@ -59,7 +59,7 @@ const result = (value) =>{
             <input type = "text" v-model="storeCreateRequest.storeNumber"/>
             <br/>
 
-            <button @click="confirmModal">확인</button>
+            <button @click="confirm = true">확인</button>
 
             <div v-if="confirm">
                 <Confirm :message="message" 

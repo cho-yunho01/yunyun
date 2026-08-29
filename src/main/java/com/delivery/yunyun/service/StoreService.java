@@ -21,22 +21,18 @@ public class StoreService {
     private final MenuRepository menuRepository;
     private final OwnerRepository ownerRepository;
 
-    public void createStore(Long ownerId, StoreCreateRequest request) {
-
-        Owner owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("사용자가 존재하지 않습니다."));
-
+    public void createStore(Owner owner, StoreCreateRequest request) {
         Store store = Store.builder()
                 .storeName(request.storeName())
                 .storeNumber(request.storeNumber())
                 .address(request.address())
-                .ownerId(ownerId)
+                .ownerId(owner.getOwnerId())
                 .build();
         storeRepository.save(store);
     }
 
-    public List<StoreMenuListResponse> getMenus(Long ownerId) {
-        Long storeId = ownerRepository.findByStoreId(ownerId);
+    public List<StoreMenuListResponse> getMenus(Owner owner) {
+        Long storeId = ownerRepository.findByStoreId(owner.getOwnerId());
         List<Menu> menuList = menuRepository.findAllByStore_StoreId(storeId);
         return menuList.stream().map(
                 (menu ->

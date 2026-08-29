@@ -4,9 +4,9 @@ import {ref, reactive} from 'vue'
 
 const MenuRequest = reactive({
     name : "",
-    price : 0,
+    price : null,
     introduction : "",
-    storeId : 0
+    storeId : null
 })
 
 const requestAPI = async () => {

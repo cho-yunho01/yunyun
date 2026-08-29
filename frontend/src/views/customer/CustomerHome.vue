@@ -3,6 +3,7 @@ import AppHeader from '@/components/common/AppHeader.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 import api from '@/api/axios';
+import LogOut from '@/components/common/LogOut.vue';
 
 const storeName = ref("");
 const router = useRouter();
@@ -15,6 +16,7 @@ const seartchStore = async () => {
 </script>
 
 <template>
+    <LogOut />
     <AppHeader />
     <div class = "home">
 

@@ -1,6 +1,7 @@
 <script setup>
 import axios from 'axios';
 import {reactive,ref} from 'vue';
+import Confirm from './common/Confirm.vue';
 import { useRouter } from 'vue-router';
 
 const customer = reactive({

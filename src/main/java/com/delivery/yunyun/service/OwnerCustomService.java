@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class OwnerCustomService implements UserDetailsService {
-    private OwnerRepository ownerRepository;
+    private final OwnerRepository ownerRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return ownerRepository.findByUserId(username);
+        return ownerRepository.findByUserId(username)
+                .orElseThrow(() -> new RuntimeException("해당 사용자는 존재하지 않습니다."));
     }
 }

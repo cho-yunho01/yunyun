@@ -1,16 +1,19 @@
 <script setup>
-
+    import AppHeader from '@/components/common/AppHeader.vue';
+    import LogOut from '@/components/common/LogOut.vue';
 </script>
 
 <template>
+    <LogOut />
+    <AppHeader />
     <div class = "createStore">
-        <router-link to="/api/store">
+        <router-link to="/store">
             가게 추가하기
         </router-link>
     </div>
 
     <div class = "menu-setting">
-        <router-link to="/api/menu/setting">
+        <router-link to="/menu/setting">
             메뉴 설정
         </router-link>
     </div>

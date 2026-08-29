@@ -34,8 +34,12 @@ public class SecurityConfiguration {
                                .requestMatchers("/api/create").permitAll()
                                .requestMatchers("/api/customer/create").permitAll()
                                .requestMatchers("/api/owner/create").permitAll()
-                               .requestMatchers("/api/owner/login").permitAll()
-                               .requestMatchers("/api/customer/login").permitAll()
+                               .requestMatchers("/api/owner/home").permitAll()
+                               .requestMatchers("/api/customer/home").permitAll()
+
+                               // 프론트로 막아두긴 했지만 나중에 고치기
+//                               .requestMatchers("/api/customer/home").permitAll()
+//                               .requestMatchers("/api/owner/home").permitAll()
                                .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
