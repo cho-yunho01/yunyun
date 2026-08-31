@@ -4,6 +4,7 @@ import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.dto.request.store.StoreCreateRequest;
 import com.delivery.yunyun.dto.request.store.StoreUpdateRequest;
 import com.delivery.yunyun.dto.response.StoreMenuListResponse;
+import com.delivery.yunyun.dto.response.StoreResponse;
 import com.delivery.yunyun.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -54,8 +55,8 @@ public class StoreController {
     
     // 6. 가게 검색
     @GetMapping("/find/stores/{storeName}")
-    public ResponseEntity<Long> findStore(@PathVariable String storeName ){
-        Long storeId = storeService.findStore(storeName);
-        return ResponseEntity.ok(storeId);
+    public ResponseEntity<List<StoreResponse>> findStore(@PathVariable String storeName ){
+        List<StoreResponse> storeResponse = storeService.findStore(storeName);
+        return ResponseEntity.ok(storeResponse);
     }
 }

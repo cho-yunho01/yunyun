@@ -1,19 +1,19 @@
 package com.delivery.yunyun.service;
 
+import com.delivery.yunyun.domain.Menu;
 import com.delivery.yunyun.domain.Owner;
+import com.delivery.yunyun.domain.Store;
 import com.delivery.yunyun.dto.request.store.StoreCreateRequest;
 import com.delivery.yunyun.dto.request.store.StoreUpdateRequest;
 import com.delivery.yunyun.dto.response.StoreMenuListResponse;
+import com.delivery.yunyun.dto.response.StoreResponse;
 import com.delivery.yunyun.repository.MenuRepository;
 import com.delivery.yunyun.repository.OwnerRepository;
 import com.delivery.yunyun.repository.StoreRepository;
-import com.delivery.yunyun.domain.Menu;
-import com.delivery.yunyun.domain.Store;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -95,8 +95,13 @@ public class StoreService {
         storeRepository.deleteById(storeId);
     }
 
-    public Long findStore(String storeName) {
-        Store store = storeRepository.findByStoreName(storeName);
-        return store.getStoreId();
+    public List<StoreResponse> findStore(String storeName) {
+        List<Store> store = storeRepository.findByStoreName(storeName);
+        return store.stream().map(
+                s -> StoreResponse.builder()
+                        .storeId(s.getStoreId())
+                        .name(s.getStoreName())
+                        .build()
+        ).toList();
     }
 }
