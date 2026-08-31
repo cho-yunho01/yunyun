@@ -9,9 +9,11 @@ import com.delivery.yunyun.repository.OwnerRepository;
 import com.delivery.yunyun.repository.StoreRepository;
 import com.delivery.yunyun.domain.Menu;
 import com.delivery.yunyun.domain.Store;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -21,6 +23,8 @@ public class StoreService {
     private final MenuRepository menuRepository;
     private final OwnerRepository ownerRepository;
 
+
+    @Transactional
     public void createStore(Owner owner, StoreCreateRequest request) {
         Store store = Store.builder()
                 .storeName(request.storeName())
@@ -29,11 +33,22 @@ public class StoreService {
                 .ownerId(owner.getOwnerId())
                 .build();
         storeRepository.save(store);
+
+        owner.setStoreId(store.getStoreId());
+        ownerRepository.save(owner);
     }
 
     public List<StoreMenuListResponse> getMenus(Owner owner) {
-        Long storeId = ownerRepository.findByStoreId(owner.getOwnerId());
-        List<Menu> menuList = menuRepository.findAllByStore_StoreId(storeId);
+        System.out.println("Owner 확인: " + owner.getName());
+        Long storeId = owner.getStoreId();
+        System.out.println("매장 ID 확인:"+ storeId);
+        Store store = storeRepository.findById(storeId).orElseThrow(() -> new RuntimeException("해당 가게를 찾지 못 했습니다."));
+
+        List<Menu> menuList = store.getMenuList();
+
+        for(int i = 0; i<menuList.size(); i++){
+            System.out.println(menuList.get(i).getName());
+        }
         return menuList.stream().map(
                 (menu ->
                         StoreMenuListResponse.builder()

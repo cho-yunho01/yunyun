@@ -1,19 +1,45 @@
 <script setup>
+import Confirm from '@/components/common/Confirm.vue';
 import axios from 'axios';
-import {ref} from 'vue';
+import {ref,computed} from 'vue';
+import api from '@/api/axios';
 
-const menuId = ref(0);
 
-const requestAPI = async () => {
-    const url = `/api/menu/delete/${menuId.value}`
-    await axios.delete(url);
+const props = defineProps({
+    menu : Object
+})
+
+const emit = defineEmits([
+    'isTrue'
+])
+
+const isTrue = ref();
+
+const menuId = ref();
+
+console.log(props);
+
+const message = computed(() => {
+    return `${props.menu.menuName}을 삭제하시겠습니까?`
+})
+
+
+
+const accept = async (value) => {
+    if(value){
+        menuId.value = props.menu.menuId;
+        const url = `/menu/delete/${menuId.value}`
+        await api.delete(url);
+        isTrue.value = false;
+        emit('isTrue', false, "delete");
+    }
+    else{
+        isTrue.value = false;
+        emit('isTrue', false, "delete")
+    }
 }
 </script>
 
 <template>
-    <div>
-        삭제할 메뉴 ID를 입력하세요.
-        <input type = "number" v-model="menuId"/>
-        <button @click="requestAPI">전송</button>
-    </div>
+    <Confirm :message="message" @result="accept" />
 </template>

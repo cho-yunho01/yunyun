@@ -1,6 +1,7 @@
 <script setup>
     import AppHeader from '@/components/common/AppHeader.vue';
     import LogOut from '@/components/common/LogOut.vue';
+
 </script>
 
 <template>

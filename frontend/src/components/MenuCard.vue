@@ -5,15 +5,6 @@ defineProps({
     menu : Object
 })
 
-const emit = defineEmits([
-    'select'
-])
-
-const isSelected = ref(false)
-
-const selectMenu = () => {
-    emit('select', isSelected.value)
-}
 </script>
 
 
@@ -31,9 +22,8 @@ const selectMenu = () => {
         </div>
 
         <div class = "introduction">
-            {{ menu.introcution }}
+            {{ menu.introduction }}
         </div>
 
-        <input type = "checkbox" v-model="isSelected" @change="selectMenu" />
     </div>
 </template>

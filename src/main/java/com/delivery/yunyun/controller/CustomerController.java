@@ -53,6 +53,9 @@ public class CustomerController {
         CustomerInfoResponse customerInfoResponse = customerService.customerInfo(customer);
         return ResponseEntity.ok(customerInfoResponse);
     }
+
+    // 6. 음식점 검색
+
     // 테스트
     @GetMapping("/id")
     public ResponseEntity<Long> getId(@AuthenticationPrincipal Customer customer){

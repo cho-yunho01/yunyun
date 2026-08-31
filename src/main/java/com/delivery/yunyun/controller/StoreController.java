@@ -24,7 +24,7 @@ public class StoreController {
         storeService.createStore(owner, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    // 2. 해당 가게 메뉴 전체 보여주기
+    // 2. 해당 가게 메뉴 전체 보여주기 (관리자)
     @GetMapping("/stores/menus")
     public ResponseEntity<List<StoreMenuListResponse>> getMenus(@AuthenticationPrincipal Owner owner){
         List<StoreMenuListResponse> menus = storeService.getMenus(owner);
