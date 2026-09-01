@@ -9,6 +9,7 @@ import UserCreate from '@/views/UserCreate.vue'
 import OwnerHome from '@/views/owner/OwnerHome.vue'
 import CreateMenu from '@/views/menu/CreateMenu.vue'
 import StoreInfo from '@/views/store/StoreInfo.vue'
+import Cart from '@/views/customer/Cart.vue'
 
 const router = createRouter({
     history : createWebHistory(),
@@ -40,7 +41,10 @@ const router = createRouter({
         {path: "/menu/create", component: CreateMenu},
 
         // 해당 매장 정보
-        {path: "/store/:storeId", component: StoreInfo}
+        {path: "/store/:storeId", component: StoreInfo},
+
+        // 장바구니
+        {path: "/cart", component: Cart}
     ]
 })
 

@@ -1,11 +1,13 @@
 package com.delivery.yunyun.controller;
 
+import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.CartItemRequest;
 import com.delivery.yunyun.dto.request.ItemAddRequest;
 import com.delivery.yunyun.dto.response.CartResponse;
 import com.delivery.yunyun.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -19,22 +21,22 @@ public class CartController {
 
     // 1. 상품 담기
     @PostMapping("/add")
-    public ResponseEntity<Void> addItem(@RequestBody ItemAddRequest request) {
-        cartService.addItem(request);
+    public ResponseEntity<Void> addItem(@AuthenticationPrincipal Customer customer, @RequestBody ItemAddRequest request) {
+        cartService.addItem(customer,request);
         return ResponseEntity.ok().build();
     }
 
     // 2. 카트 총 가격
     @GetMapping("/total/{customerId}")
-    public ResponseEntity<BigDecimal> getTotalPrice(@PathVariable Long customerId) {
-        BigDecimal totalPrice = cartService.getTotalPrice(customerId);
+    public ResponseEntity<BigDecimal> getTotalPrice(@AuthenticationPrincipal Customer customer) {
+        BigDecimal totalPrice = cartService.getTotalPrice(customer.getCustomerId());
         return ResponseEntity.ok(totalPrice);
     }
 
     // 3. 장바구니 조회
-    @GetMapping("/getCart/{customerId}")
-    public ResponseEntity<List<CartResponse>> getCart(@PathVariable Long customerId) {
-        List<CartResponse> menuList = cartService.getCart(customerId);
+    @GetMapping("/getCart")
+    public ResponseEntity<List<CartResponse>> getCart(@AuthenticationPrincipal Customer customer) {
+        List<CartResponse> menuList = cartService.getCart(customer.getCustomerId());
         return ResponseEntity.ok(menuList);
     }
 

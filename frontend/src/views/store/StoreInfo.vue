@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted,ref } from 'vue';
+import { onMounted,reactive,ref } from 'vue';
 import { useRoute } from 'vue-router';
 import api from '@/api/axios';
 import MenuCart from '@/components/MenuCart.vue';
@@ -22,11 +22,22 @@ onMounted(()=> {
     menuListRequest();
 })
 
+const cart = async(data) => {
+    const url = "/cart/add";
+    const itemAddReuqest = reactive({
+        menuId : data.menu.menuId,
+        quantity: data.quantity
+    })
+
+    console.log(itemAddReuqest);
+    api.post(url,itemAddReuqest);
+}
+
 
 </script>
 
 <template>
     <div v-for = "menu in menuList">
-        <MenuCart :menu = "menu"/>
+        <MenuCart :menu = "menu" @send = "cart"/>
     </div>
 </template>

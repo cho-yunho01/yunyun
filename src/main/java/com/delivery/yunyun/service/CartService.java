@@ -25,14 +25,11 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
 
-    public void addItem(ItemAddRequest request) {
-        Customer customer = customerRepository.findById(request.customerId())
-                .orElseThrow(() -> new RuntimeException("사용자가 존재하지 않습니다."));
-
+    public void addItem(Customer customer, ItemAddRequest request) {
         Menu menu = menuRepository.findById(request.menuId())
                 .orElseThrow(() -> new RuntimeException("해당하는 메뉴가 존재하지 않습니다."));
 
-        Cart cart = cartRepository.findByCustomer_CustomerId(request.customerId())
+        Cart cart = cartRepository.findByCustomer_CustomerId(customer.getCustomerId())
                 .orElseGet(() -> cartRepository.save(
                         Cart.builder()
                                 .customer(customer)

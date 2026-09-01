@@ -79,6 +79,12 @@ const goStore = (storeId) => {
             </router-link>
         </div>
 
+        <div class = "cart">
+            <router-link to ="/cart">
+                장바구니
+            </router-link>
+        </div>
+
 
     </div>
 </template>
