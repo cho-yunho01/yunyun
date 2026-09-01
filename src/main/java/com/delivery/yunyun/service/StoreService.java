@@ -104,4 +104,30 @@ public class StoreService {
                         .build()
         ).toList();
     }
+
+    public List<StoreResponse> findStores() {
+        List<Store> store = storeRepository.findAll();
+        return store.stream().map(
+                s -> StoreResponse.builder()
+                        .storeId(s.getStoreId())
+                        .name(s.getStoreName())
+                        .build()
+        ).toList();
+    }
+
+    public List<StoreMenuListResponse> getMenusByCustomer(Long storeId) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new RuntimeException("해당 매장이 존재하지 않습니다."));
+
+        List<Menu> menuList = store.getMenuList();
+
+        return menuList.stream().map(
+                s -> StoreMenuListResponse.builder()
+                        .menuId(s.getMenuId())
+                        .menuName(s.getName())
+                        .price(s.getPrice())
+                        .introduction(s.getIntroduction())
+                        .build()
+        ).toList();
+    }
 }

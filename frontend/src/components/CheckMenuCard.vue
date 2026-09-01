@@ -1,13 +1,12 @@
 <script setup>
 import MenuCard from './MenuCard.vue';
-import { ref } from 'vue';
 
-defineProps({
+const props = defineProps({
     menus : Array
 })
 
 const emit = defineEmits([
-    'select'
+    'select',
 ])
 
 const select = (menu, check) => {
@@ -17,13 +16,12 @@ const select = (menu, check) => {
     })
 }
 
-
 </script>
 
 <template>
-    <div v-for="menu in menus">
-        <MenuCard :menu="menus" />
-        <input type = "checkbox" @change="select(menu, $event.target.checked)"
+    <div v-for="menu in props.menus">
+        <MenuCard :menu="menu" />
+        <input type = "checkbox" @change="select(menu, $event.target.checked)">
     </div>
 
 </template>

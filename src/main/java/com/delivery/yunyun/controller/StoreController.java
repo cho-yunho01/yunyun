@@ -25,12 +25,19 @@ public class StoreController {
         storeService.createStore(owner, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    // 2. 해당 가게 메뉴 전체 보여주기 (관리자)
+    // 2.1. 해당 가게 메뉴 전체 보여주기 (관리자)
     @GetMapping("/stores/menus")
     public ResponseEntity<List<StoreMenuListResponse>> getMenus(@AuthenticationPrincipal Owner owner){
         List<StoreMenuListResponse> menus = storeService.getMenus(owner);
         return ResponseEntity.ok(menus);
     }
+    // 2.2. 해당 가게 메뉴 전체 보여주기 (사용자)
+    @GetMapping("/stores/menus/{storeId}")
+    public ResponseEntity<List<StoreMenuListResponse>> getMenusByCustomer(@PathVariable Long storeId){
+        List<StoreMenuListResponse> menus = storeService.getMenusByCustomer(storeId);
+        return ResponseEntity.ok(menus);
+    }
+
     // 3. 조건 검색 기능 구현
     @GetMapping("/stores/{storeId}/menus/{menuName}")
     public ResponseEntity<StoreMenuListResponse> getMenu(@PathVariable Long storeId, @PathVariable String menuName){
@@ -58,5 +65,12 @@ public class StoreController {
     public ResponseEntity<List<StoreResponse>> findStore(@PathVariable String storeName ){
         List<StoreResponse> storeResponse = storeService.findStore(storeName);
         return ResponseEntity.ok(storeResponse);
+    }
+
+    // 7. 모든 가게검색 (규모가 적을 경우 그냥 한 번에 많은 가게 탐색)
+    @GetMapping("/find/stores")
+    public ResponseEntity<List<StoreResponse>> findStores(){
+        List<StoreResponse> storeResponses = storeService.findStores();
+        return ResponseEntity.ok(storeResponses);
     }
 }

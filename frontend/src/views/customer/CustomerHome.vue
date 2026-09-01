@@ -1,16 +1,42 @@
 <script setup>
 import AppHeader from '@/components/common/AppHeader.vue';
-import { ref } from 'vue';
+import { onMounted, ref,computed } from 'vue';
 import { useRouter } from 'vue-router'
 import api from '@/api/axios';
 import LogOut from '@/components/common/LogOut.vue';
 
 const storeName = ref("");
 const router = useRouter();
-const seartchStore = async () => {
-    const url = `/api/find/stores/${storeName.value}`
+const storeList = ref([]);
+
+// const seartchStore = async () => {
+//     const url = `/find/stores/${storeName.value}`
+//     const response = await api.get(url);
+//     storeList.value = response.data
+// }
+
+const searchStore = async () => {
+    const url = "/find/stores"
     const response = await api.get(url);
-    router.push(`/api/store/${response.data}`)
+    storeList.value = response.data
+}
+
+onMounted(() => {
+    searchStore();
+})
+
+const stores = computed(() => {
+    if(!storeName.value.trim()){
+        return [];
+    }
+
+    return storeList.value.filter((s) => {
+        return s.name.includes(storeName.value)
+    })
+})
+
+const goStore = (storeId) => {
+    router.push(`/store/${storeId}`)
 }
 
 </script>
@@ -24,7 +50,12 @@ const seartchStore = async () => {
             음식점 검색 창
             <input type = "text" v-model="storeName">
             <button @click="seartchStore">검색</button>
-
+        </div>
+        <div v-if="stores.length > 0">
+            <div v-for="store in stores" :key="store.storeId"
+            @click="goStore(store.storeId)">
+                {{ store.name }}
+            </div>
         </div>
 
         <div class = "event">
@@ -35,7 +66,7 @@ const seartchStore = async () => {
             <div class = "info-image">
                 사용자 이미지 정보
             </div>
-            <router-link to="/api/customer/info">사용자 정보</router-link>
+            <router-link to="/customer/info">사용자 정보</router-link>
         </div>
 
         <div class = "category" v-for="menu in menus" :key = "menu.id">

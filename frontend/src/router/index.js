@@ -8,6 +8,7 @@ import OwnerMenu from '@/views/owner/OwnerMenu.vue'
 import UserCreate from '@/views/UserCreate.vue'
 import OwnerHome from '@/views/owner/OwnerHome.vue'
 import CreateMenu from '@/views/menu/CreateMenu.vue'
+import StoreInfo from '@/views/store/StoreInfo.vue'
 
 const router = createRouter({
     history : createWebHistory(),
@@ -36,7 +37,10 @@ const router = createRouter({
         {path: "/menu/setting", component:OwnerMenu},
 
         // 메뉴 추가
-        {path: "/menu/create", component: CreateMenu}
+        {path: "/menu/create", component: CreateMenu},
+
+        // 해당 매장 정보
+        {path: "/store/:storeId", component: StoreInfo}
     ]
 })
 
