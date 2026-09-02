@@ -1,5 +1,5 @@
 <script setup>
-import Confirm from '@/components/common/Confirm.vue';
+import Action from '@/components/common/Action.vue';
 import axios from 'axios';
 import {ref,computed} from 'vue';
 import api from '@/api/axios';
@@ -23,6 +23,8 @@ const message = computed(() => {
     return `${props.menu.menuName}을 삭제하시겠습니까?`
 })
 
+const resultTrue = "확인"
+const resultFalse = "취소"
 
 
 const accept = async (value) => {
@@ -41,5 +43,8 @@ const accept = async (value) => {
 </script>
 
 <template>
-    <Confirm :message="message" @result="accept" />
+    <Action :message="message" 
+    :resultTrue = "resultTrue"
+    :resultFalse="resultFalse"
+    @result="accept" />
 </template>

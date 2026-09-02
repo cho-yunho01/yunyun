@@ -4,7 +4,8 @@ import com.delivery.yunyun.domain.Cart;
 import com.delivery.yunyun.domain.CartItem;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.domain.Menu;
-import com.delivery.yunyun.dto.request.CartItemRequest;
+import com.delivery.yunyun.dto.request.cart.CartDeleteRequet;
+import com.delivery.yunyun.dto.request.cart.CartItemRequest;
 import com.delivery.yunyun.dto.request.ItemAddRequest;
 import com.delivery.yunyun.dto.response.CartResponse;
 import com.delivery.yunyun.repository.CartItemRepository;
@@ -93,8 +94,8 @@ public class CartService {
 
     }
 
-    public void deleteItem(Long cartItemId) {
-        cartRepository.deleteById(cartItemId);
+    public void deleteItem(CartDeleteRequet requet) {
+        requet.cartItemId().forEach(id -> cartRepository.deleteById(id));
     }
 
     public void updateItemQuantity(CartItemRequest request) {

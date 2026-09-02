@@ -1,6 +1,8 @@
 <script setup>
-defineProps({
-    message: String
+const props = defineProps({
+    message: String,
+    resultTrue: String,
+    resultFalse: String
 })
 
 const emit = defineEmits([
@@ -18,9 +20,9 @@ const reuslt = (value) =>{
         {{ message }}
     </div>
     <button @click="reuslt(true)">
-        확인
+        {{ props.resultTrue }}
     </button>
     <button @click="reuslt(false)">
-        취소
+        {{ props.resultFalse }}
     </button>
 </template>

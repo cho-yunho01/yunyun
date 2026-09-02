@@ -1,5 +1,5 @@
 <script setup>
-import Confirm from '@/components/common/Confirm.vue';
+import Action from '@/components/common/Action.vue';
 import axios from 'axios';
 import {ref, reactive, computed} from 'vue'
 import api from '@/api/axios';
@@ -21,6 +21,9 @@ const isTrue = ref(false);
 const message = computed(()=> {
     return `${props.menu.menuName}을 수정하시겠습니까?`
 })
+
+const resultTrue = "확인"
+const resultFalse = "취소"
 
 const emit = defineEmits([
     'isTrue'
@@ -63,7 +66,10 @@ const cancle = () => {
         <button @click="cancle">취소</button>
 
         <div v-if="isTrue">
-            <Confirm :message="message" @result="accept"/>
+            <Action :message="message" 
+            :resultTrue = "resultTrue"
+            :resultFalse="resultFalse"
+            @result="accept"/>
         </div>
     </div>
 

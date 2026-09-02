@@ -1,7 +1,8 @@
 package com.delivery.yunyun.controller;
 
 import com.delivery.yunyun.domain.Customer;
-import com.delivery.yunyun.dto.request.CartItemRequest;
+import com.delivery.yunyun.dto.request.cart.CartDeleteRequet;
+import com.delivery.yunyun.dto.request.cart.CartItemRequest;
 import com.delivery.yunyun.dto.request.ItemAddRequest;
 import com.delivery.yunyun.dto.response.CartResponse;
 import com.delivery.yunyun.service.CartService;
@@ -41,11 +42,11 @@ public class CartController {
     }
 
     // 4. 장바구니 상품 삭제
-    @DeleteMapping("/delete/{cartItemId}")
-    public ResponseEntity<Void> deleteItem(@PathVariable Long cartItemId) {
-        cartService.deleteItem(cartItemId);
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteItem(@RequestBody CartDeleteRequet request) {
+        cartService.deleteItem(request);
         return ResponseEntity.ok().build();
-    }
+    }                                                                    
 
     // 5. 장바구니 상품 수정 (수량)
     @PutMapping("/update/quantity")

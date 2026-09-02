@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 import {reactive,ref} from 'vue';
-import Confirm from './common/Confirm.vue';
+import Action from './common/Action.vue';
 import { useRouter } from 'vue-router';
 
 const customer = reactive({
@@ -32,9 +32,11 @@ const reset = () => {
     customer.balance = null
 }
 
-const confirmView = ref(false);
+const ActionView = ref(false);
 
 const message = "생성하시겠습니까?";
+const resultTrue = "확인";
+const resultFalse = "취소";
 
 </script>
 
@@ -48,10 +50,13 @@ const message = "생성하시겠습니까?";
         <input type = "text" v-model="customer.name" /> <br />
         사용자 잔액을 입력하세요.
         <input type = "number" v-model="customer.balance" />
-        <button @click="confirmView = true">생성</button>
+        <button @click="ActionView = true">생성</button>
 
-        <div v-if="confirmView">
-            <Confirm :message="message" @result="result"/>
+        <div v-if="ActionView">
+            <Action :message="message"
+            :resultTrue = "resultTrue"
+            :resultFalse="resultFalse"
+            @result="result"/>
         </div>
     </div>
 </template>

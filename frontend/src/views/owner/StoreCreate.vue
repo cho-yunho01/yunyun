@@ -1,6 +1,6 @@
 <script setup>
 import api from '@/api/axios';
-import Confirm from '@/components/common/Confirm.vue';
+import Action from '@/components/common/Action.vue';
 import { ref,reactive } from 'vue';
 
 const storeCreateRequest = reactive({
@@ -14,13 +14,15 @@ const requestAPI = async () => {
     await api.post(url, storeCreateRequest)
 }
 
-const confirmModal = () => {
-    confirm = true;
+const ActionModal = () => {
+    isTrue = true;
 }
 
-const confirm = ref(false);
+const isTrue = ref(false);
 
 const message = "등록하시겠습니까?";
+const resultTrue = "확인"
+const resultFalse = "취소"
 
 const reset = () => {
     storeCreateRequest.address = "",
@@ -32,10 +34,10 @@ const result = (value) =>{
     if(value){
         requestAPI();
         reset();
-        confirm.value = false
+        isTrue.value = false
     }
     else{
-        confirm.value = false
+        isTrue.value = false
     }
 }
 
@@ -59,10 +61,12 @@ const result = (value) =>{
             <input type = "text" v-model="storeCreateRequest.storeNumber"/>
             <br/>
 
-            <button @click="confirm = true">확인</button>
+            <button @click="isTrue = true">확인</button>
 
-            <div v-if="confirm">
-                <Confirm :message="message" 
+            <div v-if="isTrue">
+                <Action :message="message"
+                :resultTrue = "resultTrue"
+                :resultFalse = "resultFalse" 
                 @result="result($event)" />
             </div>
         </div>
