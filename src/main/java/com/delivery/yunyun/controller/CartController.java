@@ -1,7 +1,7 @@
 package com.delivery.yunyun.controller;
 
 import com.delivery.yunyun.domain.Customer;
-import com.delivery.yunyun.dto.request.cart.CartDeleteRequet;
+import com.delivery.yunyun.dto.request.cart.CartDeleteRequest;
 import com.delivery.yunyun.dto.request.cart.CartItemRequest;
 import com.delivery.yunyun.dto.request.ItemAddRequest;
 import com.delivery.yunyun.dto.response.CartResponse;
@@ -43,7 +43,7 @@ public class CartController {
 
     // 4. 장바구니 상품 삭제
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteItem(@RequestBody CartDeleteRequet request) {
+    public ResponseEntity<Void> deleteItem(@RequestBody CartDeleteRequest request) {
         cartService.deleteItem(request);
         return ResponseEntity.ok().build();
     }                                                                    

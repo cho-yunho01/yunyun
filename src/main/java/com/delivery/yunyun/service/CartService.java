@@ -4,7 +4,7 @@ import com.delivery.yunyun.domain.Cart;
 import com.delivery.yunyun.domain.CartItem;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.domain.Menu;
-import com.delivery.yunyun.dto.request.cart.CartDeleteRequet;
+import com.delivery.yunyun.dto.request.cart.CartDeleteRequest;
 import com.delivery.yunyun.dto.request.cart.CartItemRequest;
 import com.delivery.yunyun.dto.request.ItemAddRequest;
 import com.delivery.yunyun.dto.response.CartResponse;
@@ -76,7 +76,8 @@ public class CartService {
     public List<CartResponse> getCart(Long customerId) {
         // 1.사용자 ID를 가지고 해당 카트 객체 필요
         Cart cart = cartRepository.findByCustomer_CustomerId(customerId)
-                .orElseThrow(() -> new RuntimeException("해당 사용자가 존재하지 않습니다."));
+                .orElse(null);
+
 
         // 2. 카트 객체를 가지고 카트 아이템 객체 필요
         List<CartItem> cartItemList = cart.getCartItemList();
@@ -94,8 +95,11 @@ public class CartService {
 
     }
 
-    public void deleteItem(CartDeleteRequet requet) {
-        requet.cartItemId().forEach(id -> cartRepository.deleteById(id));
+    public void deleteItem(CartDeleteRequest request) {
+        request.cartItemId().forEach(id -> System.out.println("현재 ID의 값: "+id));
+
+        request.cartItemId().forEach(id ->
+                cartItemRepository.deleteById(id));
     }
 
     public void updateItemQuantity(CartItemRequest request) {

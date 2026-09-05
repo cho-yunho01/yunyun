@@ -2,7 +2,7 @@ package com.delivery.yunyun.dto.request.cart;
 
 import java.util.List;
 
-public record CartDeleteRequet(
+public record CartDeleteRequest(
         List<Long> cartItemId
 ) {
 }

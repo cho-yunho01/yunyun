@@ -10,13 +10,16 @@ const selectList = ref([]);
 
 const updateStauts = ref(false);
 
-const 
+const updateCart = ref();
 
-const openUpdate = ref()
+const openUpdate = (cart) => {
+    updateCart.value = cart;
+    updateStauts.value = true;
+};
 
-const updateItem = async (data, cart) => {
+const updateItem = async (data) => {
     const cartItemRequest = reactive({
-        cartItemId : cart.cartItemId,
+        cartItemId : updateCart.value.cartItemId,
         quantity : data
     })
 
@@ -62,7 +65,12 @@ const deleteRequest = async () => {
         s => s.cartItemId
     );
     const url = "/cart/delete"
-    await api.delete(url,deleteIds)
+    await api.delete(url,{
+        data:{
+            cartItemId : deleteIds.value
+        }
+    })
+    requestCart();
 }
 </script>
 
@@ -99,7 +107,7 @@ const deleteRequest = async () => {
     </div>
 
     <div v-if="updateStauts">
-        <UpdateItem @quantity="updateItem($event, cart)"/>
+        <UpdateItem @quantity="updateItem($event)"/>
     </div>
     
 </template>
