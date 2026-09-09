@@ -4,6 +4,8 @@ import com.delivery.yunyun.config.security.JwtTokenProvider;
 import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.dto.request.OwnerRequest;
 import com.delivery.yunyun.dto.request.owner.OwnerLoginRequest;
+import com.delivery.yunyun.error.ErrorCode;
+import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,10 +55,10 @@ public class OwnerService {
 
     public String login(OwnerLoginRequest request) {
         Owner owner = ownerRepository.findByUserId(request.userId())
-                .orElseThrow(() -> new RuntimeException("해당 사용자는 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         if(!passwordEncoder.matches(request.password(), owner.getPassword())){
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
         return jwtTokenProvider.createToken(request.userId(), owner.getRoles());
     }

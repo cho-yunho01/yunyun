@@ -4,6 +4,8 @@ import com.delivery.yunyun.domain.Menu;
 import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.domain.Store;
 import com.delivery.yunyun.dto.request.MenuRequest;
+import com.delivery.yunyun.error.CustomException;
+import com.delivery.yunyun.error.ErrorCode;
 import com.delivery.yunyun.repository.MenuRepository;
 import com.delivery.yunyun.repository.OwnerRepository;
 import com.delivery.yunyun.repository.StoreRepository;
@@ -20,7 +22,7 @@ public class MenuService {
     public void createMenu(Owner owner, MenuRequest request) {
         System.out.println(owner.getOwnerId()+"입니다.");
         Store store = storeRepository.findById(owner.getStoreId())
-                .orElseThrow(() -> new RuntimeException("해당 상점이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND)); // 상점이 존재하지 않음
         Menu menu = Menu.builder()
                 .name(request.name())
                 .price(request.price())

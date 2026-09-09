@@ -54,7 +54,6 @@ public class CustomerController {
         return ResponseEntity.ok(customerInfoResponse);
     }
 
-    // 6. 음식점 검색
 
     // 테스트
     @GetMapping("/id")

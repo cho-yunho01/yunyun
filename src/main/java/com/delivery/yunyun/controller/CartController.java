@@ -7,6 +7,7 @@ import com.delivery.yunyun.dto.request.ItemAddRequest;
 import com.delivery.yunyun.dto.response.CartResponse;
 import com.delivery.yunyun.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -53,5 +54,14 @@ public class CartController {
     public ResponseEntity<Void> updateItemQuantity(@RequestBody CartItemRequest request) {
         cartService.updateItemQuantity(request);
         return ResponseEntity.ok().build();
+    }
+
+    // 6. 장바구니 아이템 전체 삭제
+    @DeleteMapping("/delete/all")
+    public ResponseEntity<Void> deleteAllItem(@AuthenticationPrincipal Customer customer){
+        cartService.deleteAllItem(customer);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
     }
 }

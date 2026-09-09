@@ -8,10 +8,13 @@ import com.delivery.yunyun.dto.request.cart.CartDeleteRequest;
 import com.delivery.yunyun.dto.request.cart.CartItemRequest;
 import com.delivery.yunyun.dto.request.ItemAddRequest;
 import com.delivery.yunyun.dto.response.CartResponse;
+import com.delivery.yunyun.error.CustomException;
+import com.delivery.yunyun.error.ErrorCode;
 import com.delivery.yunyun.repository.CartItemRepository;
 import com.delivery.yunyun.repository.CartRepository;
 import com.delivery.yunyun.repository.CustomerRepository;
 import com.delivery.yunyun.repository.MenuRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +31,15 @@ public class CartService {
 
     public void addItem(Customer customer, ItemAddRequest request) {
         Menu menu = menuRepository.findById(request.menuId())
-                .orElseThrow(() -> new RuntimeException("해당하는 메뉴가 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
+
+        Long storeId = menu.getStore().getStoreId();
+        Boolean check = checkStore(customer, storeId);
+
+        if(!check){
+            throw new CustomException(ErrorCode.CART_STORE_MISMATCH);
+        }
+
 
         Cart cart = cartRepository.findByCustomer_CustomerId(customer.getCustomerId())
                 .orElseGet(() -> cartRepository.save(
@@ -58,7 +69,7 @@ public class CartService {
 
     public BigDecimal getTotalPrice(Long customerId) {
         Cart cart = cartRepository.findByCustomer_CustomerId(customerId)
-                .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.CART_NOT_FOUND));
 
         List<CartItem> cartItemList = cart.getCartItemList();
 
@@ -109,5 +120,27 @@ public class CartService {
         cartItem.setQuantity(request.quantity());
 
         cartItemRepository.save(cartItem);
+    }
+
+    public Boolean checkStore(Customer customer, Long storeId){
+        Cart cart = cartRepository.findByCustomer_CustomerId(customer.getCustomerId())
+                .orElseThrow(() -> new CustomException(ErrorCode.CART_NOT_FOUND));
+
+        List<CartItem> cartItemList = cart.getCartItemList();
+
+        return cartItemList.stream()
+                .allMatch(
+                item -> item.getMenu().getStore().getStoreId().equals(storeId)
+        );
+    }
+
+    @Transactional
+    public void deleteAllItem(Customer customer) {
+        System.out.println("Customer의 정보" + customer.getName());
+        Cart cart = cartRepository.findByCustomer_CustomerId(customer.getCustomerId())
+                .orElseThrow(() -> new CustomException(ErrorCode.CART_NOT_FOUND));
+
+        cartItemRepository.deleteAllByCart(cart);
+
     }
 }

@@ -5,6 +5,8 @@ import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
 import com.delivery.yunyun.dto.response.CustomerInfoResponse;
+import com.delivery.yunyun.error.ErrorCode;
+import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +22,10 @@ public class CustomerService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public void customerCreate(CustomerRequest request) {
+        if(customerRepository.findByUserId(request.userId()).isPresent()){
+            new CustomException(ErrorCode.DUPLICATE_USER_ID);
+        };
+
         Customer customer = Customer.builder()
                 .name(request.name())
                 .userId(request.userId())
@@ -58,9 +64,11 @@ public class CustomerService {
     }
 
     public String login(CustomerLoginRequest request) {
-        Customer customer = customerRepository.findByUserId(request.userId());
+        Customer customer = customerRepository.findByUserId(request.userId())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)); // 사용자가 존재하지 않음
+
         if(!passwordEncoder.matches(request.password(), customer.getPassword())){
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_PASSWORD); // 패스워드 일치 오류
         }
         return jwtTokenProvider.createToken(request.userId(), customer.getRoles());
     }

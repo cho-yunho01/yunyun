@@ -1,5 +1,7 @@
 package com.delivery.yunyun.service;
 
+import com.delivery.yunyun.error.CustomException;
+import com.delivery.yunyun.error.ErrorCode;
 import com.delivery.yunyun.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +16,7 @@ public class CustomerCustomService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return customerRepository.findByUserId(username);
+        return customerRepository.findByUserId(username)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 }

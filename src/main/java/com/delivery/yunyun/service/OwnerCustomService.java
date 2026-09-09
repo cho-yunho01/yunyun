@@ -1,5 +1,7 @@
 package com.delivery.yunyun.service;
 
+import com.delivery.yunyun.error.ErrorCode;
+import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +17,6 @@ public class OwnerCustomService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return ownerRepository.findByUserId(username)
-                .orElseThrow(() -> new RuntimeException("해당 사용자는 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 }

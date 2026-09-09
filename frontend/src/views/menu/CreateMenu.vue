@@ -28,7 +28,7 @@ const requestAPI = async (value) => {
     if(value){
         await api.post(url, MenuRequest);
         router.push("/owner/home");
-        isAction = false;
+        isAction.value = false;
     }
     else{
         isAction.value = false;

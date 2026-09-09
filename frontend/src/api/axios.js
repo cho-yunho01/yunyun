@@ -18,4 +18,18 @@ api.interceptors.request.use(config => {
     return config
 })
 
+api.interceptors.response.use(
+    response => {
+        return response
+    },
+    error => {
+        if(error.response){
+            const {code, message} = error.response.data;
+            console.log("에러 코드", code);
+            console.log("메세지", message);
+        }
+
+        return Promise.reject(error);
+    }
+)
 export default api;
