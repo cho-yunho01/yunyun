@@ -7,9 +7,6 @@ import java.util.List;
 
 public record OrderItemListRequest(
         List<OrderItemRequest> orderItemRequestList,
-        Long storeId,
-        Long customerId, //@AuthenticationPrincipal로 변환
-        OrderStatus orderStatus,
         BigDecimal totalPrice
 ) {
 }

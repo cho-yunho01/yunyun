@@ -1,9 +1,11 @@
 package com.delivery.yunyun.controller;
 
+import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.order.OrderItemListRequest;
 import com.delivery.yunyun.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +18,8 @@ public class OrderController {
     private final OrderService orderService;
     // 1. 상품 주문 (주문할 상품 ID를 리스트로 받은 다음 사용자 ID와 함께 주문하기)
     @PostMapping("/create")
-    public ResponseEntity<Void> createOrder(@RequestBody OrderItemListRequest request){
-        orderService.createOrder(request);
+    public ResponseEntity<Void> createOrder(@AuthenticationPrincipal Customer customer, @RequestBody OrderItemListRequest request){
+        orderService.createOrder(customer, request);
         return ResponseEntity.ok().build();
     }
     // 2. 주문 취소 (주문 ID를 가지고 주문 취소하기)

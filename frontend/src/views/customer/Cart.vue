@@ -72,6 +72,24 @@ const deleteRequest = async () => {
     })
     requestCart();
 }
+
+const order = async () => {
+
+    const url = "/order/create"
+
+    const orderItemRequest = selectList.value.map(
+        cart => ({
+            cartItemId : cart.cartItemId
+        })
+    )
+    const orderItemListRequest = {
+        orderItemRequest: orderItemRequest,
+        totalPrice: totalPrice.value
+    };
+
+    await api.post(url, orderItemListRequest);
+
+}
 </script>
 
 <template>
@@ -98,6 +116,7 @@ const deleteRequest = async () => {
 
     <div v-if = "selectList.length > 0">
         <button @click = "deleteRequest">삭제</button>
+        <button @click = "order">주문</button>
     </div>
 
     <div class = "total">
