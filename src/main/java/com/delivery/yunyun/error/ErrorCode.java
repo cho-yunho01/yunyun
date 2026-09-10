@@ -48,6 +48,13 @@ public enum ErrorCode {
             "장바구니를 찾을 수 없습니다."
     ),
 
+    // 장바구니 아이템
+    CARTITEM_NOT_FOUND(
+            HttpStatus.NOT_FOUND,
+            "CARTITEM_001",
+            "장바구니 메뉴를 찾을 수 없습니다."
+    ),
+
     // 메뉴
 
     MENU_NOT_FOUND(
