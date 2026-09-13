@@ -2,6 +2,8 @@
     import AppHeader from '@/components/common/AppHeader.vue';
     import LogOut from '@/components/common/LogOut.vue';
 
+    const id = localStorage.getItem("id");
+    const url = `/order/${id}`
 </script>
 
 <template>
@@ -26,4 +28,11 @@
     <div class = "total-sales">
         총 판매
     </div>
+
+    <div class = "order-list">
+        <router-link :to = "url">
+            주문 상태
+        </router-link>
+    </div>
+
 </template>

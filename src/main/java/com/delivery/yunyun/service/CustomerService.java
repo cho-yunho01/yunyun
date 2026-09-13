@@ -5,6 +5,7 @@ import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
 import com.delivery.yunyun.dto.response.CustomerInfoResponse;
+import com.delivery.yunyun.dto.response.LoginResponse;
 import com.delivery.yunyun.error.ErrorCode;
 import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.repository.CustomerRepository;
@@ -63,15 +64,22 @@ public class CustomerService {
         customerRepository.deleteById(customerId);
     }
 
-    public String login(CustomerLoginRequest request) {
+    public LoginResponse login(CustomerLoginRequest request) {
         Customer customer = customerRepository.findByUserId(request.userId())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)); // 사용자가 존재하지 않음
 
         if(!passwordEncoder.matches(request.password(), customer.getPassword())){
             throw new CustomException(ErrorCode.INVALID_PASSWORD); // 패스워드 일치 오류
         }
-        return jwtTokenProvider.createToken(request.userId(), customer.getRoles());
+        return LoginResponse.builder()
+                .id(customer.getCustomerId())
+                .token(jwtTokenProvider.createToken(request.userId(), customer.getRoles()))
+                .build();
+
     }
+
+
+
 
     public CustomerInfoResponse customerInfo(Customer customer) {
         return CustomerInfoResponse.builder()

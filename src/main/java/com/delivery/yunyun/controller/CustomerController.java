@@ -4,6 +4,7 @@ import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
 import com.delivery.yunyun.dto.response.CustomerInfoResponse;
+import com.delivery.yunyun.dto.response.LoginResponse;
 import com.delivery.yunyun.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,9 +43,9 @@ public class CustomerController {
 
     // 4. 사용자 로그인
     @PostMapping("/login")
-    private ResponseEntity<String> login(@RequestBody CustomerLoginRequest request){
-        String token = customerService.login(request);
-        return ResponseEntity.ok(token);
+    private ResponseEntity<LoginResponse> login(@RequestBody CustomerLoginRequest request){
+        LoginResponse loginResponse = customerService.login(request);
+        return ResponseEntity.ok(loginResponse);
     }
 
     // 5. 사용자 정보

@@ -2,6 +2,7 @@ package com.delivery.yunyun.controller;
 
 import com.delivery.yunyun.dto.request.OwnerRequest;
 import com.delivery.yunyun.dto.request.owner.OwnerLoginRequest;
+import com.delivery.yunyun.dto.response.LoginResponse;
 import com.delivery.yunyun.service.OwnerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,8 @@ public class OwnerController {
 
     // 4. 사용자 로그인
     @PostMapping("/login")
-    private ResponseEntity<String> login(@RequestBody OwnerLoginRequest request){
-        String token = ownerService.login(request);
-        return ResponseEntity.ok(token);
+    private ResponseEntity<LoginResponse> login(@RequestBody OwnerLoginRequest request){
+        LoginResponse loginResponse = ownerService.login(request);
+        return ResponseEntity.ok(loginResponse);
     }
 }

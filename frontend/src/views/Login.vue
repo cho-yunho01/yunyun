@@ -37,7 +37,8 @@ const requestAPI = async () => {
     console.log("response 전체:", response);
     console.log("response.data:", response.data);
 
-    const accessToken = response.data;
+    const accessToken = response.data.token;
+    const id = response.data.id;
 
     if (accessToken === null || !accessToken) {
         showModal.value = true;
@@ -46,10 +47,17 @@ const requestAPI = async () => {
     }
 
     localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("id", id)
 
     console.log(
         "저장된 accessToken:",
         localStorage.getItem("accessToken")
+    );
+
+    
+    console.log(
+        "저장된 id:",
+        localStorage.getItem("id")
     );
 
     resetLogin();

@@ -7,7 +7,9 @@ import com.delivery.yunyun.error.ErrorCode;
 import com.delivery.yunyun.repository.CartItemRepository;
 import com.delivery.yunyun.repository.OrderItemRepository;
 import com.delivery.yunyun.repository.OrderRepository;
+import com.delivery.yunyun.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +17,9 @@ import org.springframework.stereotype.Service;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final StoreRepository storeRepository;
 
     public void createOrder(Customer customer, OrderItemListRequest request) {
 
@@ -37,11 +42,32 @@ public class OrderService {
 
         request.orderItemRequestList().forEach(
                 item -> {
-                    CartItem  orderItem=  cartItemRepository.findById(item.cartItemId())
+                    CartItem  c =  cartItemRepository.findById(item.cartItemId())
                             .orElseThrow(() -> new CustomException(ErrorCode.CARTITEM_NOT_FOUND));
+
+                    Long menuId = c.getMenu().getMenuId();
+
+                    OrderItem orderItem = OrderItem.builder()
+                            .order(order)
+                            .menuId(menuId)
+                            .quantity(c.getQuantity())
+                            .build();
+
+                    orderItemRepository.save(orderItem);
 
                 }
         );
+
+        Store store = storeRepository.findById(storeId)
+                        .orElseThrow( () -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+
+        simpMessagingTemplate.convertAndSend(
+                "/topic/order/"+store.getOwnerId(),
+                ""
+        );
+
+
 
         /*
         1. 상점 ID 필요

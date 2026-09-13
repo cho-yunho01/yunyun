@@ -4,6 +4,7 @@ import com.delivery.yunyun.config.security.JwtTokenProvider;
 import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.dto.request.OwnerRequest;
 import com.delivery.yunyun.dto.request.owner.OwnerLoginRequest;
+import com.delivery.yunyun.dto.response.LoginResponse;
 import com.delivery.yunyun.error.ErrorCode;
 import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.repository.OwnerRepository;
@@ -53,13 +54,17 @@ public class OwnerService {
         ownerRepository.deleteById(ownerId);
     }
 
-    public String login(OwnerLoginRequest request) {
+    public LoginResponse login(OwnerLoginRequest request) {
         Owner owner = ownerRepository.findByUserId(request.userId())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         if(!passwordEncoder.matches(request.password(), owner.getPassword())){
             throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
-        return jwtTokenProvider.createToken(request.userId(), owner.getRoles());
+
+        return LoginResponse.builder()
+                .id(owner.getOwnerId())
+                .token(jwtTokenProvider.createToken(request.userId(), owner.getRoles()))
+                .build();
     }
 }
