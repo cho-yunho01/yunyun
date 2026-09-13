@@ -83,9 +83,13 @@ const order = async () => {
         })
     )
     const orderItemListRequest = {
-        orderItemRequest: orderItemRequest,
+        orderItemRequestList: orderItemRequest,
         totalPrice: totalPrice.value
     };
+
+    orderItemRequest.forEach(
+        cart => console.log('카트의 ID 값 : '+cart.cartItemId)
+    )
 
     await api.post(url, orderItemListRequest);
 

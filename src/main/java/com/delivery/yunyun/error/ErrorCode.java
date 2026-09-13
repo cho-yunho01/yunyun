@@ -61,8 +61,16 @@ public enum ErrorCode {
             HttpStatus.NOT_FOUND,
             "MENU_001",
                     "해당 메뉴를 찾을 수 없습니다."
-    );
+    ),
 
+
+    // 주문
+
+    ORDER_NOT_FOUND(
+            HttpStatus.NOT_FOUND,
+            "ORDER_001",
+            "해당 주문 정보를 찾을 수 없습니다."
+    );
 
     private final HttpStatus status;
     private final String code;

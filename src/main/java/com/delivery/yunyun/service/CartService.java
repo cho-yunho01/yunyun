@@ -123,6 +123,7 @@ public class CartService {
     }
 
     public Boolean checkStore(Customer customer, Long storeId){
+        System.out.println("checkStore에서의 Customer의 값"+customer);
         Cart cart = cartRepository.findByCustomer_CustomerId(customer.getCustomerId())
                 .orElseThrow(() -> new CustomException(ErrorCode.CART_NOT_FOUND));
 

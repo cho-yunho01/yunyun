@@ -1,9 +1,52 @@
 <script setup>
+    import api from '@/api/axios';
     import AppHeader from '@/components/common/AppHeader.vue';
     import LogOut from '@/components/common/LogOut.vue';
+import OrderInfo from '@/components/OrderInfo.vue';
+    import {Client} from '@stomp/stompjs';
+    import SockJS from 'sockjs-client';
+    import { onMounted, onUnmounted } from 'vue';
+    import { ref } from 'vue';
 
     const id = localStorage.getItem("id");
     const url = `/order/${id}`
+    const orderResponse = ref();
+
+    let stompClient = null;
+
+    onMounted( () => {
+        stompClient = new Client({
+            webSocketFactory: () => {
+                return new SockJS('http://localhost:8080/ws/order')
+            },
+            onConnect: () => {
+                console.log('WebSocket 연결 성공');
+
+                stompClient.subscribe(`/topic/order/${id}`, (message) => {
+                    console.log("새 주문 도착!");
+                    const orderId = JSON.parse(message.body)
+
+                    getNotifications(orderId);
+                })
+            }
+        
+
+        })
+
+        stompClient.activate();
+    })
+
+    onUnmounted( () => {
+        if(stompClient)
+        stompClient.deactivate();
+    })
+    
+    const getNotifications = async (orderId) => {
+        const url = `/order/get/${orderId}`;
+        const response = await api.get(url);
+        orderResponse.value = response.data;
+    }
+
 </script>
 
 <template>
@@ -35,4 +78,7 @@
         </router-link>
     </div>
 
+    <div v-if="orderResponse">
+        <OrderInfo :order="orderResponse"/>
+    </div>
 </template>

@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                                .requestMatchers("/api/owner/create").permitAll()
                                .requestMatchers("/api/owner/home").permitAll()
                                .requestMatchers("/api/customer/home").permitAll()
+                               .requestMatchers("/ws/order/**").permitAll()
 
                                // 프론트로 막아두긴 했지만 나중에 고치기
 //                               .requestMatchers("/api/customer/home").permitAll()

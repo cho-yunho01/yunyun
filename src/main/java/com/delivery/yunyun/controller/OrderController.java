@@ -2,14 +2,12 @@ package com.delivery.yunyun.controller;
 
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.order.OrderItemListRequest;
+import com.delivery.yunyun.dto.response.OrderResponse;
 import com.delivery.yunyun.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/order")
@@ -29,5 +27,12 @@ public class OrderController {
     // 3. 주문 받기 (점주가 사용자로부터 주문을 받아서 수락 or 거절)
     public void processOrder(){
 
+    }
+
+    // 4. 주문 정보
+    @GetMapping("/get/{orderId}")
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable Long orderId){
+        OrderResponse orderResponse = orderService.getOrder(orderId);
+        return ResponseEntity.ok(orderResponse);
     }
 }

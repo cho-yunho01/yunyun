@@ -2,15 +2,16 @@ package com.delivery.yunyun.service;
 
 import com.delivery.yunyun.domain.*;
 import com.delivery.yunyun.dto.request.order.OrderItemListRequest;
+import com.delivery.yunyun.dto.response.OrderItemResponse;
+import com.delivery.yunyun.dto.response.OrderResponse;
 import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.error.ErrorCode;
-import com.delivery.yunyun.repository.CartItemRepository;
-import com.delivery.yunyun.repository.OrderItemRepository;
-import com.delivery.yunyun.repository.OrderRepository;
-import com.delivery.yunyun.repository.StoreRepository;
+import com.delivery.yunyun.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +21,11 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final StoreRepository storeRepository;
+    private final MenuRepository menuRepository;
+    private final CustomerRepository customerRepository;
 
     public void createOrder(Customer customer, OrderItemListRequest request) {
+        System.out.println("OrderItemListRequest의 값: "+request);
 
         Long cartItemId = request.orderItemRequestList().get(0).cartItemId();
 
@@ -30,7 +34,7 @@ public class OrderService {
 
         Long storeId = cartItem.getMenu().getStore().getStoreId();
 
-        // Order객체 생성
+        // Order 객체 생성
         Order order = Order.builder()
                 .customerId(customer.getCustomerId())
                 .storeId(storeId)
@@ -64,9 +68,13 @@ public class OrderService {
 
         simpMessagingTemplate.convertAndSend(
                 "/topic/order/"+store.getOwnerId(),
-                ""
+                order.getOrderId()
         );
 
+//        simpMessagingTemplate.convertAndSend(
+//                "/topic/order/"+1,
+//                "전송 성공"
+//        );
 
 
         /*
@@ -81,5 +89,35 @@ public class OrderService {
         삭제시 JPQL 사용하여 삭제 // 고도화 시켜야함
          */
 
+    }
+
+    public OrderResponse getOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+
+        List<OrderItem> orderItemList = order.getOrderItemList();
+
+        List<OrderItemResponse> orderItemResponseList = orderItemList.stream().map(
+                item -> {
+                    Menu menu = menuRepository.findById(item.getMenuId())
+                            .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
+
+                    return OrderItemResponse.builder()
+                            .menuName(menu.getName())
+                            .quantity(item.getQuantity())
+                            .price(menu.getPrice())
+                            .build();
+
+                }
+        ).toList();
+
+        Customer customer = customerRepository.findById(order.getCustomerId())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        return OrderResponse.builder()
+                .orderItemResponseList(orderItemResponseList)
+                .userId(customer.getUserId())
+                .totalPrice(order.getTotalPrice())
+                .build();
     }
 }
