@@ -1,13 +1,19 @@
 <script setup>
 import AppHeader from '@/components/common/AppHeader.vue';
-import { onMounted, ref,computed } from 'vue';
+import { onMounted, ref,computed,onUnmounted } from 'vue';
 import { useRouter } from 'vue-router'
 import api from '@/api/axios';
 import LogOut from '@/components/common/LogOut.vue';
+    import {Client} from '@stomp/stompjs';
+    import SockJS from 'sockjs-client';
 
 const storeName = ref("");
 const router = useRouter();
 const storeList = ref([]);
+const id = localStorage.getItem("id");
+
+
+let stompClient = null;
 
 // const seartchStore = async () => {
 //     const url = `/find/stores/${storeName.value}`
@@ -23,6 +29,31 @@ const searchStore = async () => {
 
 onMounted(() => {
     searchStore();
+    stompClient = new Client({
+        webSocketFactory: () => {
+            return new SockJS('http://localhost:8080/ws/order')
+        },
+        onConnect: () => {
+            console.log('WebSocket 연결 성공');
+
+            stompClient.subscribe(`/topic/customer/order/${id}`, (message) => {
+                console.log("주문 수락!");
+                const orderId = JSON.parse(message.body)
+
+                acceptOrder(orderId);
+            })
+        }
+    })
+    stompClient.activate();
+})
+
+const acceptOrder = (orderId) => {
+    alert(orderId+"주문 수락!");
+}
+
+onUnmounted(() => {
+    if(stompClient)
+    stompClient.deactivate();
 })
 
 const stores = computed(() => {

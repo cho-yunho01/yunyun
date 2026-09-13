@@ -3,6 +3,18 @@
         order : Object
     })
 
+    const emit = defineEmits([
+        'accept',
+        'cancle'
+    ])
+
+    const accept = (orderId) => {
+        emit('accept',orderId)
+    }
+
+    const cancle = (orderId) => {
+        emit('cancle',orderId)
+    }
 
 </script>
 
@@ -19,5 +31,11 @@
     <div>
         총 가격: {{ order.totalPrice }}
     </div>
-    
+
+    <button @click="accept(props.order.orderId)">
+        수락
+    </button>
+    <button @click="cancle(props.order.orderId)">
+        거절
+    </button>
 </template>

@@ -35,4 +35,14 @@ public class OrderController {
         OrderResponse orderResponse = orderService.getOrder(orderId);
         return ResponseEntity.ok(orderResponse);
     }
+
+
+    // 5. 주문 수락
+    @PatchMapping("/{orderId}/accept")
+    public ResponseEntity<Void> acceptOrder(@PathVariable Long orderId){
+        orderService.acceptOrder(orderId);
+        return ResponseEntity.ok().build();
+    }
+
+
 }

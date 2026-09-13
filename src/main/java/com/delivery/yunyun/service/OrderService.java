@@ -67,7 +67,7 @@ public class OrderService {
 
 
         simpMessagingTemplate.convertAndSend(
-                "/topic/order/"+store.getOwnerId(),
+                "/topic/owner/order/"+store.getOwnerId(),
                 order.getOrderId()
         );
 
@@ -115,9 +115,28 @@ public class OrderService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         return OrderResponse.builder()
+                .orderId(orderId)
                 .orderItemResponseList(orderItemResponseList)
                 .userId(customer.getUserId())
                 .totalPrice(order.getTotalPrice())
                 .build();
+    }
+
+    public void acceptOrder(Long orderId) {
+        System.out.println("acceptOrder 진입 성공");
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+
+//        order.setOrderStatus(OrderStatus.COOKING);
+
+        Long customerId = order.getCustomerId();
+
+        orderRepository.save(order);
+
+        simpMessagingTemplate.convertAndSend(
+                "/topic/customer/order/"+customerId,
+                orderId
+        );
+
     }
 }

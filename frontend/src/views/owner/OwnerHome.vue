@@ -2,7 +2,7 @@
     import api from '@/api/axios';
     import AppHeader from '@/components/common/AppHeader.vue';
     import LogOut from '@/components/common/LogOut.vue';
-import OrderInfo from '@/components/OrderInfo.vue';
+    import OrderInfo from '@/components/OrderInfo.vue';
     import {Client} from '@stomp/stompjs';
     import SockJS from 'sockjs-client';
     import { onMounted, onUnmounted } from 'vue';
@@ -10,7 +10,7 @@ import OrderInfo from '@/components/OrderInfo.vue';
 
     const id = localStorage.getItem("id");
     const url = `/order/${id}`
-    const orderResponse = ref();
+    const orderResponse = ref([]);
 
     let stompClient = null;
 
@@ -22,7 +22,7 @@ import OrderInfo from '@/components/OrderInfo.vue';
             onConnect: () => {
                 console.log('WebSocket 연결 성공');
 
-                stompClient.subscribe(`/topic/order/${id}`, (message) => {
+                stompClient.subscribe(`/topic/owner/order/${id}`, (message) => {
                     console.log("새 주문 도착!");
                     const orderId = JSON.parse(message.body)
 
@@ -44,7 +44,17 @@ import OrderInfo from '@/components/OrderInfo.vue';
     const getNotifications = async (orderId) => {
         const url = `/order/get/${orderId}`;
         const response = await api.get(url);
-        orderResponse.value = response.data;
+        orderResponse.value.push(response.data);
+    }
+
+    const acceptOrder = async(orderId) => {
+        const url = `/order/${orderId}/accept`
+        await api.patch(url);
+    }
+
+    const cancleOrder = async(orderId) => {
+        const url = `/order/${orderId}cancle`
+        await api.delete(url)
     }
 
 </script>
@@ -78,7 +88,9 @@ import OrderInfo from '@/components/OrderInfo.vue';
         </router-link>
     </div>
 
-    <div v-if="orderResponse">
-        <OrderInfo :order="orderResponse"/>
+    <div v-for="order in orderResponse" :key="order.orderId">
+        <OrderInfo :order="order" 
+        @accept="acceptOrder"
+        @cancle="cancleOrder"/>
     </div>
 </template>
