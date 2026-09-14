@@ -52,8 +52,8 @@
         await api.patch(url);
     }
 
-    const cancleOrder = async(orderId) => {
-        const url = `/order/${orderId}cancle`
+    const cancelOrder = async(orderId) => {
+        const url = `/order/${orderId}/cancel`
         await api.delete(url)
     }
 
@@ -91,6 +91,6 @@
     <div v-for="order in orderResponse" :key="order.orderId">
         <OrderInfo :order="order" 
         @accept="acceptOrder"
-        @cancle="cancleOrder"/>
+        @cancel="cancelOrder"/>
     </div>
 </template>

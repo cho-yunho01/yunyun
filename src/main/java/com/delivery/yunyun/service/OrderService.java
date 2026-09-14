@@ -3,6 +3,7 @@ package com.delivery.yunyun.service;
 import com.delivery.yunyun.domain.*;
 import com.delivery.yunyun.dto.request.order.OrderItemListRequest;
 import com.delivery.yunyun.dto.response.OrderItemResponse;
+import com.delivery.yunyun.dto.response.OrderNotification;
 import com.delivery.yunyun.dto.response.OrderResponse;
 import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.error.ErrorCode;
@@ -12,6 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -135,8 +137,28 @@ public class OrderService {
 
         simpMessagingTemplate.convertAndSend(
                 "/topic/customer/order/"+customerId,
-                orderId
+                OrderNotification.builder()
+                        .orderId(orderId)
+                        .status("ACCEPT")
+                        .build()
         );
 
+    }
+
+    public void cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+
+        orderRepository.delete(order);
+
+        Long customerId = order.getCustomerId();
+
+        simpMessagingTemplate.convertAndSend(
+                "/topic/customer/order/"+customerId,
+                OrderNotification.builder()
+                        .orderId(orderId)
+                        .status("CANCEL")
+                        .build()
+        );
     }
 }

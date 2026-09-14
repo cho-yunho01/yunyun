@@ -20,7 +20,11 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(
+            mappedBy = "order",
+            cascade = CascadeType.REMOVE,
+            orphanRemoval = true
+    )
     private List<OrderItem> orderItemList;
 
     private Long customerId;

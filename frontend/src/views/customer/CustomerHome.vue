@@ -37,10 +37,14 @@ onMounted(() => {
             console.log('WebSocket 연결 성공');
 
             stompClient.subscribe(`/topic/customer/order/${id}`, (message) => {
-                console.log("주문 수락!");
-                const orderId = JSON.parse(message.body)
-
-                acceptOrder(orderId);
+                console.log("주문 답변!");
+                const order = JSON.parse(message.body)
+                if(order.status === 'ACCEPT'){
+                    acceptOrder(order.orderId)
+                }
+                else if(order.status === 'CANCEL'){
+                    cancelOrder(order.orderId)
+                }
             })
         }
     })
@@ -48,7 +52,11 @@ onMounted(() => {
 })
 
 const acceptOrder = (orderId) => {
-    alert(orderId+"주문 수락!");
+    alert(orderId+"번 주문 수락!");
+}
+
+const cancelOrder = (orderId) => {
+    alert(orderId+"번 주문 취소!");
 }
 
 onUnmounted(() => {

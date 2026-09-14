@@ -44,5 +44,12 @@ public class OrderController {
         return ResponseEntity.ok().build();
     }
 
+    // 6. 주문 취소
+    @DeleteMapping("/{orderId}/cancel")
+    public ResponseEntity<Void> cancelOrder(@PathVariable Long orderId){
+        orderService.cancelOrder(orderId);
+        return ResponseEntity.ok().build();
+    }
+
 
 }

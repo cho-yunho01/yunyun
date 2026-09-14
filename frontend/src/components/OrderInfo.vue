@@ -12,8 +12,8 @@
         emit('accept',orderId)
     }
 
-    const cancle = (orderId) => {
-        emit('cancle',orderId)
+    const cancel = (orderId) => {
+        emit('cancel',orderId)
     }
 
 </script>
@@ -35,7 +35,7 @@
     <button @click="accept(props.order.orderId)">
         수락
     </button>
-    <button @click="cancle(props.order.orderId)">
+    <button @click="cancel(props.order.orderId)">
         거절
     </button>
 </template>
