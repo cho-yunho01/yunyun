@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface StoreRepository extends JpaRepository<Store,Long> {
     List<Store> findByStoreName(String storeName);
+
+    Store findByOwnerId(Long ownerId);
 }

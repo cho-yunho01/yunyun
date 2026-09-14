@@ -5,7 +5,7 @@
 
     const emit = defineEmits([
         'accept',
-        'cancle'
+        'cancel'
     ])
 
     const accept = (orderId) => {
@@ -20,7 +20,7 @@
 
 <template>
     <div class = "userId">
-        {{ order.userId }}
+        사용자 ID : {{ order.userId }}
     </div>
     <div v-for="item in order.orderItemResponseList" :key="item.menuName">
         메뉴이름 : {{ item.menuName }} <br/>

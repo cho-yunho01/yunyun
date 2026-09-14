@@ -3,14 +3,14 @@
     import AppHeader from '@/components/common/AppHeader.vue';
     import LogOut from '@/components/common/LogOut.vue';
     import OrderInfo from '@/components/OrderInfo.vue';
+import OrderNotification from '@/components/OrderNotification.vue';
     import {Client} from '@stomp/stompjs';
     import SockJS from 'sockjs-client';
     import { onMounted, onUnmounted } from 'vue';
     import { ref } from 'vue';
 
     const id = localStorage.getItem("id");
-    const url = `/order/${id}`
-    const orderResponse = ref([]);
+    const newOrderResponse = ref([]);
 
     let stompClient = null;
 
@@ -29,7 +29,6 @@
                     getNotifications(orderId);
                 })
             }
-        
 
         })
 
@@ -44,19 +43,27 @@
     const getNotifications = async (orderId) => {
         const url = `/order/get/${orderId}`;
         const response = await api.get(url);
-        orderResponse.value.push(response.data);
+        newOrderResponse.value.push(response.data);
     }
 
     const acceptOrder = async(orderId) => {
         const url = `/order/${orderId}/accept`
         await api.patch(url);
+        newOrderResponse.value = newOrderResponse.value.filter(
+            order => order.orderId !== orderId
+        )
     }
 
     const cancelOrder = async(orderId) => {
         const url = `/order/${orderId}/cancel`
         await api.delete(url)
+
+        newOrderResponse.value = newOrderResponse.value.filter(
+            order => order.orderId !== orderId
+        )
     }
 
+    
 </script>
 
 <template>
@@ -83,14 +90,18 @@
     </div>
 
     <div class = "order-list">
-        <router-link :to = "url">
+        <router-link to = "/order/list">
             주문 상태
         </router-link>
     </div>
 
-    <div v-for="order in orderResponse" :key="order.orderId">
-        <OrderInfo :order="order" 
-        @accept="acceptOrder"
-        @cancel="cancelOrder"/>
+    <div v-if="newOrderResponse.length > 0">
+            <OrderNotification 
+            v-for="order in newOrderResponse"
+            :key = "order.orderId"
+            :order="order"
+            @accept="acceptOrder"
+            @cancel="cancelOrder"/>
     </div>
+
 </template>

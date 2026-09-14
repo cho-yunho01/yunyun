@@ -13,7 +13,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -78,18 +77,6 @@ public class OrderService {
 //                "전송 성공"
 //        );
 
-
-        /*
-        1. 상점 ID 필요
-        2. 가게 해당 재고 수량 감소 시켜야하는데 아직 구현 안 함.
-        3. 알림을 구현해야함 // WebSocket에 대해 공부
-
-
-        먼저 Order 객체 생성 후
-        orderItem 생성
-
-        삭제시 JPQL 사용하여 삭제 // 고도화 시켜야함
-         */
 
     }
 
@@ -160,5 +147,54 @@ public class OrderService {
                         .status("CANCEL")
                         .build()
         );
+    }
+
+    public List<OrderResponse> orderInfoList(Owner owner) {
+
+        Store store = storeRepository.findByOwnerId(owner.getOwnerId());
+
+        List<Order> orderList = orderRepository.findByStoreId(store.getStoreId());
+
+        List<OrderResponse> orderResponses = orderList.stream().map(
+                order -> {
+                    List<OrderItem> orderItemList = order.getOrderItemList();
+//                    for(int i = 0 ;i< orderItemList.size();i++){
+//                        System.out.println("orderItemList의 값 ["+i+"] : "+orderItemList.get(i).getOrderItemId());
+//                    }
+                    List<OrderItemResponse> orderItemResponses = orderItemList.stream().map(
+                            item -> {
+                                Menu menu = menuRepository.findById(item.getMenuId())
+                                        .orElseThrow(() -> new CustomException(ErrorCode.MENU_NOT_FOUND));
+                                return OrderItemResponse.builder()
+                                        .menuName(menu.getName())
+                                        .quantity(item.getQuantity())
+                                        .price(menu.getPrice())
+                                        .build();
+                            }
+                    ).toList();
+
+                    Customer customer = customerRepository.findById(order.getCustomerId())
+                            .orElseThrow( () -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+//                    for(int i = 0 ;i< orderItemResponses.size(); i++){
+//                        System.out.println("orderItemResponses의 값 [" + i + "] : "+orderItemResponses.get(i).menuName());
+//                    }
+
+                    return OrderResponse.builder()
+                            .orderId(order.getOrderId())
+                            .orderItemResponseList(orderItemResponses)
+                            .userId(customer.getUserId())
+                            .totalPrice(order.getTotalPrice())
+                            .build();
+
+                }
+        ).toList();
+
+        for(int i = 0 ;i< orderResponses.size(); i++){
+            System.out.println("orderResponses의 orderID [" + i + "] : "+orderResponses.get(i).orderId());
+        }
+
+        return orderResponses;
+
     }
 }

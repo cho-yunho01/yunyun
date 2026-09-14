@@ -48,7 +48,7 @@ const router = createRouter({
         {path: "/cart", component: Cart},
 
         // 주문 목록
-        {path: "/order/:id", component: OrderList},
+        {path: "/order/list", component: OrderList},
     ]
 })
 
