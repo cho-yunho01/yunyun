@@ -53,6 +53,19 @@ public class OrderController {
         return ResponseEntity.ok(orderResponses);
     }
 
+    // 6. 사용자 주문 현황
+    @GetMapping("/customer/info")
+    public ResponseEntity<List<OrderResponse>> customerOrderInfo(@AuthenticationPrincipal Customer customer){
+        List<OrderResponse> orderResponses = orderService.customerOrderInfo(customer);
+        return ResponseEntity.ok(orderResponses);
+    }
+
+    // 7. 확인 안 된 주문 정보
+    @GetMapping("/info/pending/list")
+    public ResponseEntity<List<OrderResponse>> pendingOrderInfoList(@AuthenticationPrincipal Owner owner){
+        List<OrderResponse> orderResponses =  orderService.pendingOrderInfoList(owner);
+        return ResponseEntity.ok(orderResponses);
+    }
 
 
 }

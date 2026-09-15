@@ -113,7 +113,7 @@ const goStore = (storeId) => {
         </div>
 
         <div class="delivery-status">
-            <router-link to="/api/customer/delivery_status">
+            <router-link to="/customer/order/status">
                 배달 현황
             </router-link>
         </div>

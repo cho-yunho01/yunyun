@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -123,9 +124,13 @@ public class CartService {
     }
 
     public Boolean checkStore(Customer customer, Long storeId){
-        System.out.println("checkStore에서의 Customer의 값"+customer);
-        Cart cart = cartRepository.findByCustomer_CustomerId(customer.getCustomerId())
-                .orElseThrow(() -> new CustomException(ErrorCode.CART_NOT_FOUND));
+        Optional<Cart> cartOptional = cartRepository.findByCustomer_CustomerId(customer.getCustomerId());
+
+        if (cartOptional.isEmpty()) {
+            return true;
+        }
+
+        Cart cart = cartOptional.get();
 
         List<CartItem> cartItemList = cart.getCartItemList();
 

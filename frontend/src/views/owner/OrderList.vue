@@ -8,9 +8,12 @@ import SockJS from 'sockjs-client';
 
 const orderList = ref([]);
 
-const id = localStorage.getItem('id');
+const pendingOrderList = ref([]);
 
 const newOrderResponse = ref([]);
+
+const id = localStorage.getItem('id');
+
 
 const orderRequest = async () => {
     const url = `/order/info/list`;
@@ -20,10 +23,17 @@ const orderRequest = async () => {
     console.log('response의 값 : '+response.data)
 }
 
+const pendingOrderRequest = async () => {
+    const url = `/order/info/pending/list`;
+    const response = await api.get(url);
+    pendingOrderList.value = response.data;
+    
+}
 let stompClient = null;
 
 onMounted(() => {
     orderRequest();
+    pendingOrderRequest();
 
         stompClient = new Client({
             webSocketFactory: () => {
@@ -35,7 +45,8 @@ onMounted(() => {
                 stompClient.subscribe(`/topic/owner/order/${id}`, (message) => {
                     console.log("새 주문 도착!");
                     const orderId = JSON.parse(message.body)
-
+                    orderRequest();
+                    pendingOrderRequest();
                     getNotifications(orderId);
                 })
             }
@@ -67,6 +78,8 @@ onUnmounted(() => {
         newOrderResponse.value = newOrderResponse.value.filter(
             order => order.orderId !== orderId
         )
+        orderRequest();
+        pendingOrderRequest();
     }
 
     
@@ -81,13 +94,26 @@ onUnmounted(() => {
         newOrderResponse.value = newOrderResponse.value.filter(
             order => order.orderId !== orderId
         )
+        orderRequest();
+        pendingOrderRequest();
     }
 </script>
 
 <template>
+    <h1>확인 안 된 주문들</h1>
+    <div v-for="orders in pendingOrderList" :key="orders.orderId">
+        주문 ID : {{ orders.orderId }}
+        <OrderInfo :order="orders" 
+        @accept="acceptOrder"
+        @cancel="cancelOrder"/>
+    </div>
+
+    <br/>
+    <h1>확인이 된 주문들</h1>
     <div v-for="orders in orderList" :key="orders.orderId">
         주문 ID : {{ orders.orderId }}
         <OrderInfo :order="orders" 
+        button="ACCEPTED"
         @accept="acceptOrder"
         @cancel="cancelOrder"/>
     </div>

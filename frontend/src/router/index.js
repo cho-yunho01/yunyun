@@ -11,6 +11,7 @@ import CreateMenu from '@/views/menu/CreateMenu.vue'
 import StoreInfo from '@/views/store/StoreInfo.vue'
 import Cart from '@/views/customer/Cart.vue'
 import OrderList from '@/views/owner/OrderList.vue'
+import CustomerOrderStatus from '@/views/customer/CustomerOrderStatus.vue'
 
 const router = createRouter({
     history : createWebHistory(),
@@ -25,6 +26,9 @@ const router = createRouter({
 
         // 사용자 홈화면
         {path: "/customer/home",component: CustomerHome},
+
+        // 사용자 주문 현황
+        {path: "/customer/order/status", component: CustomerOrderStatus},
 
         // 오너 홈화면
         {path: "/owner/home", component: OwnerHome},
