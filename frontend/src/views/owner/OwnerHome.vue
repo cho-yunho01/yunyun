@@ -63,6 +63,12 @@ import OrderNotification from '@/components/OrderNotification.vue';
         )
     }
 
+    const close = (orderId) => {
+        newOrderResponse.value = newOrderResponse.value.filter(
+            order => order.orderId !== orderId
+        )
+    }
+
     
 </script>
 
@@ -101,7 +107,8 @@ import OrderNotification from '@/components/OrderNotification.vue';
             :key = "order.orderId"
             :order="order"
             @accept="acceptOrder"
-            @cancel="cancelOrder"/>
+            @cancel="cancelOrder"
+            @close="close""/>
     </div>
 
 </template>

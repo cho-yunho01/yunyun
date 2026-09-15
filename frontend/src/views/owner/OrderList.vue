@@ -97,33 +97,66 @@ onUnmounted(() => {
         orderRequest();
         pendingOrderRequest();
     }
+
+    const close = (orderId) => {
+        newOrderResponse.value = newOrderResponse.value.filter(
+            order => order.orderId !== orderId
+        )
+    }
 </script>
 
 <template>
-    <h1>확인 안 된 주문들</h1>
-    <div v-for="orders in pendingOrderList" :key="orders.orderId">
-        주문 ID : {{ orders.orderId }}
-        <OrderInfo :order="orders" 
-        @accept="acceptOrder"
-        @cancel="cancelOrder"/>
-    </div>
+    <section class="order-section">
+        <h1>확인 안 된 주문들</h1>
 
-    <br/>
-    <h1>확인이 된 주문들</h1>
-    <div v-for="orders in orderList" :key="orders.orderId">
-        주문 ID : {{ orders.orderId }}
-        <OrderInfo :order="orders" 
-        button="ACCEPTED"
-        @accept="acceptOrder"
-        @cancel="cancelOrder"/>
-    </div>
+        <div v-for="orders in pendingOrderList" :key="orders.orderId" class="order-item">
+            주문 ID : {{ orders.orderId }}
+
+            <OrderInfo
+                :order="orders"
+                @accept="acceptOrder"
+                @cancel="cancelOrder"
+            />
+        </div>
+    </section>
+
+    <section class="order-section confirmed">
+        <h1>확인이 된 주문들</h1>
+
+        <div v-for="orders in orderList" :key="orders.orderId" class="order-item">
+            주문 ID : {{ orders.orderId }}
+
+            <OrderInfo
+                :order="orders"
+                button="ACCEPTED"
+                @accept="acceptOrder"
+                @cancel="cancelOrder"
+            />
+        </div>
+    </section>
 
     <div v-if="newOrderResponse.length > 0">
-            <OrderNotification 
+        <OrderNotification
             v-for="order in newOrderResponse"
-            :key = "order.orderId"
+            :key="order.orderId"
             :order="order"
             @accept="acceptOrder"
-            @cancel="cancelOrder"/>
+            @cancel="cancelOrder"
+            @close="close"
+        />
     </div>
 </template>
+
+<style scoped>
+.order-section {
+    margin-bottom: 80px;
+}
+
+.confirmed {
+    margin-top: 80px;
+}
+
+.order-item {
+    margin-bottom: 30px;
+}
+</style>

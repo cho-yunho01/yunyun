@@ -1,3 +1,4 @@
+```vue
 <script setup>
 const props = defineProps({
     order: Object
@@ -5,7 +6,8 @@ const props = defineProps({
 
 const emit = defineEmits([
     'accept',
-    'cancel'
+    'cancel',
+    'close'
 ])
 
 const accept = (orderId) => {
@@ -15,6 +17,10 @@ const accept = (orderId) => {
 const cancel = (orderId) => {
     emit('cancel', orderId)
 }
+
+const close = (orderId) => {
+    emit('close', orderId)
+}
 </script>
 
 <template>
@@ -22,8 +28,14 @@ const cancel = (orderId) => {
 
         <div class="order-modal">
 
+            <!-- X 버튼 -->
+            <button class="close-button" @click="close(order.orderId)">
+                X
+            </button>
+
             <h2>새 주문이 들어왔습니다!</h2>
             <h3>주문 ID {{ order.orderId }}</h3>
+
             <div>
                 사용자 ID : {{ order.userId }}
             </div>
@@ -77,6 +89,8 @@ const cancel = (orderId) => {
 }
 
 .order-modal {
+    position: relative;
+
     width: 400px;
 
     padding: 30px;
@@ -86,6 +100,26 @@ const cancel = (orderId) => {
     border-radius: 15px;
 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.close-button {
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    width: auto !important;
+
+    padding: 5px 10px !important;
+
+    margin: 0 !important;
+
+    background: none !important;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    cursor: pointer;
 }
 
 .order-modal h2 {
