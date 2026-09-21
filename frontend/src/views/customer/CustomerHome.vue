@@ -102,9 +102,6 @@ const goStore = (storeId) => {
         </div>
 
         <div class = "info">
-            <div class = "info-image">
-                사용자 이미지 정보
-            </div>
             <router-link to="/customer/info">사용자 정보</router-link>
         </div>
 

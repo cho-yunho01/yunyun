@@ -18,6 +18,6 @@ onMounted( () =>{
 </script>
 
 <template>
-    사용자 정보
+    <h1>사용자 정보</h1>
     <CustomerDetail :customer = "customer" />
 </template>
