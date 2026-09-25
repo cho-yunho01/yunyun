@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
 
   jwt:
-    secret: yunyun-test-jwt-secret-key-2026-very-4ecure
+    secret: yunyun-test-jwt-secret-key-2026-very-secure
 
   jpa:
     hibernate:
