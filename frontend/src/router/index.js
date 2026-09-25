@@ -17,7 +17,7 @@ const router = createRouter({
     history : createWebHistory(),
     routes:[
         {path:"/",component: Login},
-        {path: "/api/customer/info", component: CustomerInfo},
+        {path: "/customer/info", component: CustomerInfo},
         // 사용자 메뉴 화면
         {path: "/api/store/:storeId", component:CustomerMenu},
 
