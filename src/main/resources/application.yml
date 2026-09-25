@@ -6,9 +6,14 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
 
   jwt:
-    secret: yunyun-test-jwt-secret-key-2026-very-secure
+    secret: yunyun-test-jwt-secret-key-2026-very-4ecure
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
