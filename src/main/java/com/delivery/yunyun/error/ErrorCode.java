@@ -70,7 +70,18 @@ public enum ErrorCode {
             HttpStatus.NOT_FOUND,
             "ORDER_001",
             "해당 주문 정보를 찾을 수 없습니다."
+    ),
+
+    // 쿠폰
+
+    COUPON_NOT_FOUND(
+            HttpStatus.NOT_FOUND,
+            "COUPON_001",
+            "해당 쿠폰을 찾을 수 없습니다."
     );
+
+
+
 
     private final HttpStatus status;
     private final String code;
