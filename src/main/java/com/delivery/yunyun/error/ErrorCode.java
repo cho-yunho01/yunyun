@@ -78,7 +78,13 @@ public enum ErrorCode {
             HttpStatus.NOT_FOUND,
             "COUPON_001",
             "해당 쿠폰을 찾을 수 없습니다."
-    );
+    ),
+
+    EVENT_NOT_FOUND(
+            HttpStatus.NOT_FOUND,
+            "EVENT_001",
+            "해당 이벤트를 찾을 수 없습니다."
+            );
 
 
 

@@ -31,6 +31,8 @@ public class Event {
 
     private LocalDateTime endAt;
 
+    private Long userId;
+
     @OneToMany(mappedBy = "event")
     List<CustomerCoupon> customerCouponList;
 }
