@@ -2,7 +2,7 @@ package com.delivery.yunyun.service;
 
 import com.delivery.yunyun.config.security.JwtTokenProvider;
 import com.delivery.yunyun.domain.Owner;
-import com.delivery.yunyun.dto.request.OwnerRequest;
+import com.delivery.yunyun.dto.request.owner.OwnerRequest;
 import com.delivery.yunyun.dto.request.owner.OwnerLoginRequest;
 import com.delivery.yunyun.dto.response.LoginResponse;
 import com.delivery.yunyun.error.ErrorCode;

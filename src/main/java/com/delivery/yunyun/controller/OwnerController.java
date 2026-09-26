@@ -1,6 +1,6 @@
 package com.delivery.yunyun.controller;
 
-import com.delivery.yunyun.dto.request.OwnerRequest;
+import com.delivery.yunyun.dto.request.owner.OwnerRequest;
 import com.delivery.yunyun.dto.request.owner.OwnerLoginRequest;
 import com.delivery.yunyun.dto.response.LoginResponse;
 import com.delivery.yunyun.service.OwnerService;

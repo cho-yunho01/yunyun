@@ -3,7 +3,7 @@ package com.delivery.yunyun.controller;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
-import com.delivery.yunyun.dto.response.CustomerInfoResponse;
+import com.delivery.yunyun.dto.response.customer.CustomerInfoResponse;
 import com.delivery.yunyun.dto.response.LoginResponse;
 import com.delivery.yunyun.service.CustomerService;
 import lombok.RequiredArgsConstructor;

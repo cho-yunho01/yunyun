@@ -1,4 +1,4 @@
-package com.delivery.yunyun.dto.response;
+package com.delivery.yunyun.dto.response.store;
 
 import lombok.Builder;
 

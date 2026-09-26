@@ -1,6 +1,6 @@
 package com.delivery.yunyun.config.security;
 
-import com.delivery.yunyun.dto.response.EntryPointErrorResponse;
+import com.delivery.yunyun.dto.response.error.EntryPointErrorResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

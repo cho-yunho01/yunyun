@@ -1,4 +1,4 @@
-package com.delivery.yunyun.dto.request;
+package com.delivery.yunyun.dto.request.cart;
 
 
 public record ItemAddRequest(

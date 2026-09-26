@@ -1,4 +1,4 @@
-package com.delivery.yunyun.dto.request;
+package com.delivery.yunyun.dto.request.menu;
 
 
 import java.math.BigDecimal;

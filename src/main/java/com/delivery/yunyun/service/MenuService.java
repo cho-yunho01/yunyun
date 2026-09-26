@@ -3,7 +3,7 @@ package com.delivery.yunyun.service;
 import com.delivery.yunyun.domain.Menu;
 import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.domain.Store;
-import com.delivery.yunyun.dto.request.MenuRequest;
+import com.delivery.yunyun.dto.request.menu.MenuRequest;
 import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.error.ErrorCode;
 import com.delivery.yunyun.repository.MenuRepository;

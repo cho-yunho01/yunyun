@@ -1,6 +1,6 @@
 package com.delivery.yunyun.error;
 
-import com.delivery.yunyun.dto.response.ErrorResponse;
+import com.delivery.yunyun.dto.response.error.ErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

@@ -3,7 +3,7 @@ package com.delivery.yunyun.controller;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.dto.request.order.OrderItemListRequest;
-import com.delivery.yunyun.dto.response.OrderResponse;
+import com.delivery.yunyun.dto.response.order.OrderResponse;
 import com.delivery.yunyun.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

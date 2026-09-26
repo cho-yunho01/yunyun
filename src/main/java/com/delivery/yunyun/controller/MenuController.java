@@ -1,7 +1,7 @@
 package com.delivery.yunyun.controller;
 
 import com.delivery.yunyun.domain.Owner;
-import com.delivery.yunyun.dto.request.MenuRequest;
+import com.delivery.yunyun.dto.request.menu.MenuRequest;
 import com.delivery.yunyun.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
