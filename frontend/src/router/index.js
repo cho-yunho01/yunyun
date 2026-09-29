@@ -12,6 +12,7 @@ import StoreInfo from '@/views/store/StoreInfo.vue'
 import Cart from '@/views/customer/Cart.vue'
 import OrderList from '@/views/owner/OrderList.vue'
 import CustomerOrderStatus from '@/views/customer/CustomerOrderStatus.vue'
+import Event from '@/views/event/Event.vue'
 
 const router = createRouter({
     history : createWebHistory(),
@@ -53,6 +54,9 @@ const router = createRouter({
 
         // 주문 목록
         {path: "/order/list", component: OrderList},
+
+        // 이벤트
+        {path: "/event", component: Event},
     ]
 })
 

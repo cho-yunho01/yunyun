@@ -95,6 +95,12 @@ import OrderNotification from '@/components/OrderNotification.vue';
         총 판매
     </div>
 
+    <div class = "event">
+        <router-link to="/event">
+            이벤트
+        </router-link>
+    </div>
+
     <div class = "order-list">
         <router-link to = "/order/list">
             주문 상태

@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 @Builder
 public record CouponResponse(
+        Long couponId,
         String couponName,
         BigDecimal discountPrice
 ) {

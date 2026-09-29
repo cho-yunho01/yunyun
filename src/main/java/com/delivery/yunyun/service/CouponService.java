@@ -49,6 +49,7 @@ public class CouponService {
         List<CouponResponse> couponResponses = coupons.stream()
                 .map(coupon -> {
                     CouponResponse couponResponse = CouponResponse.builder()
+                            .couponId(coupon.getCouponId())
                             .couponName(coupon.getName())
                             .discountPrice(coupon.getDiscountPrice())
                             .build();
