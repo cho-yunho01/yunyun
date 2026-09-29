@@ -3,6 +3,7 @@ package com.delivery.yunyun.service;
 import com.delivery.yunyun.domain.Coupon;
 import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.dto.request.coupon.CouponRequest;
+import com.delivery.yunyun.dto.request.coupon.UpdateCouponRequest;
 import com.delivery.yunyun.dto.response.coupon.CouponResponse;
 import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.error.ErrorCode;
@@ -27,8 +28,8 @@ public class CouponService {
         couponRepository.save(coupon);
     }
 
-    public void updateCoupon(Owner owner, CouponRequest request) {
-        Coupon coupon = couponRepository.findByName(request.couponName())
+    public void updateCoupon(Owner owner, UpdateCouponRequest request) {
+        Coupon coupon = couponRepository.findById(request.couponId())
                 .orElseThrow(() -> new CustomException(ErrorCode.COUPON_NOT_FOUND));
 
         if(request.couponName() != null){

@@ -101,6 +101,13 @@ import OrderNotification from '@/components/OrderNotification.vue';
         </router-link>
     </div>
 
+
+    <div class = "coupon">
+        <router-link to ="/coupon">
+            쿠폰
+        </router-link>
+    </div>
+
     <div class = "order-list">
         <router-link to = "/order/list">
             주문 상태

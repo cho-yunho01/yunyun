@@ -73,6 +73,7 @@ public class EventService {
         return events.stream().map(
                 event -> {
                     EventResponse eventResponse = EventResponse.builder()
+                            .eventId(event.getEventId())
                             .name(event.getName())
                             .description(event.getDescription())
                             .couponId(event.getCouponId())

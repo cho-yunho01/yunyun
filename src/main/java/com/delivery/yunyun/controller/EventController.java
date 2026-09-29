@@ -18,7 +18,7 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addEvent(@AuthenticationPrincipal Owner owner, EventRequest request){
+    public ResponseEntity<?> addEvent(@AuthenticationPrincipal Owner owner, @RequestBody EventRequest request){
         eventService.addEvent(owner, request);
         return ResponseEntity.ok().build();
     }

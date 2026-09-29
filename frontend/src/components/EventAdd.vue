@@ -1,7 +1,8 @@
 <script setup>
 import api from '@/api/axios';
 import { reactive,ref, onMounted } from 'vue';
-import Coupon from './Coupon.vue';
+import CouponList from './coupon/CouponList.vue';
+import Action from './common/Action.vue';
 
 const eventRequest = reactive({
     name : null,
@@ -11,6 +12,8 @@ const eventRequest = reactive({
     startAt : null,
     endAt : null
 })
+
+const action = ref(false);
 
 const couponList = ref([
     // {
@@ -34,6 +37,16 @@ const couponList = ref([
     //     discountPrice: 10000
     // }
 ]);
+
+const result = (value) => {
+    if(value){
+        request();
+        action.value = false;
+    }
+    else{
+        action.value = false;
+    }
+}
 
 const request = async () => {
     const url = "/event/add";
@@ -70,7 +83,7 @@ const selectCoupon = (id) => {
         <div>
             적용시킬 쿠폰을 클릭하세요.
             <div v-for="coupon in couponList" :key="coupon.couponId">
-                <Coupon :coupon="coupon" :is-selected="eventRequest.couponId === coupon.couponId" @select="selectCoupon"/>
+                <CouponList :coupon="coupon" :is-selected="eventRequest.couponId === coupon.couponId" @select="selectCoupon"/>
             </div>
         </div>
         <div>
@@ -87,5 +100,9 @@ const selectCoupon = (id) => {
         </div>
     </div>
 
-    <button @click="request">전송</button>
+    <button @click="action = true">전송</button>
+    <div v-if="action">
+        <Action message="생성하시겠습니까?" result-true="생성" result-false="취소"
+        @result="result" />
+    </div>
 </template>

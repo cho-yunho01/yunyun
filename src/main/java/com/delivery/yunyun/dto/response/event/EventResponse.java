@@ -5,6 +5,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 @Builder
 public record EventResponse(
+        Long eventId,
         String name,
         String description,
         Long couponId,

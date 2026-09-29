@@ -2,6 +2,7 @@ package com.delivery.yunyun.controller;
 
 import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.dto.request.coupon.CouponRequest;
+import com.delivery.yunyun.dto.request.coupon.UpdateCouponRequest;
 import com.delivery.yunyun.dto.response.coupon.CouponResponse;
 import com.delivery.yunyun.service.CouponService;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,13 @@ public class CouponController {
     private final CouponService couponService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addCoupone(@AuthenticationPrincipal Owner owner, CouponRequest request){
+    public ResponseEntity<?> addCoupone(@AuthenticationPrincipal Owner owner, @RequestBody CouponRequest request){
         couponService.addCoupon(owner, request);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<?> updateCoupone(@AuthenticationPrincipal Owner owner, CouponRequest request){
+    public ResponseEntity<?> updateCoupone(@AuthenticationPrincipal Owner owner, @RequestBody UpdateCouponRequest request){
         couponService.updateCoupon(owner, request);
         return ResponseEntity.ok().build();
     }
