@@ -17,7 +17,7 @@ onMounted(() => {
 })
 
 const eventResponse = async() => {
-    const url = '/event'
+    const url = '/event/owner'
     const response = await api.get(url);
     eventList.value = response.data;
 }

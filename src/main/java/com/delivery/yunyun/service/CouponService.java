@@ -61,4 +61,15 @@ public class CouponService {
         return couponResponses;
 
     }
+
+    public CouponResponse getCouponDetail(Long couponId) {
+        Coupon coupon = couponRepository.findById(couponId)
+                .orElseThrow(() -> new CustomException(ErrorCode.COUPON_NOT_FOUND));
+
+        return CouponResponse.builder()
+                .couponId(coupon.getCouponId())
+                .couponName(coupon.getName())
+                .discountPrice(coupon.getDiscountPrice())
+                .build();
+    }
 }

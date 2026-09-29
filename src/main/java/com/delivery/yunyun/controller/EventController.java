@@ -35,10 +35,22 @@ public class EventController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping()
-    public ResponseEntity<List<EventResponse>> getEvent(@AuthenticationPrincipal Owner owner){
+    @GetMapping("/owner")
+    public ResponseEntity<List<EventResponse>> getOwnerEvent(@AuthenticationPrincipal Owner owner){
         List<EventResponse> eventResponses= eventService.getEvent(owner);
         return ResponseEntity.ok(eventResponses);
+    }
+
+    @GetMapping("/customer")
+    public ResponseEntity<List<EventResponse>> getCustomerEvent(){
+        List<EventResponse> eventResponses= eventService.getCustomerEvent();
+        return ResponseEntity.ok(eventResponses);
+    }
+
+    @GetMapping("/{eventId}")
+    public ResponseEntity<EventResponse> getEventDatail(@PathVariable Long eventId){
+        EventResponse eventResponse = eventService.getEventDetail(eventId);
+        return ResponseEntity.ok(eventResponse);
     }
 
 

@@ -85,4 +85,38 @@ public class EventService {
                 }
         ).toList();
     }
+
+    public List<EventResponse> getCustomerEvent() {
+        List<Event> events = eventRepository.findAll();
+        return events.stream().map(
+                event -> {
+                    EventResponse eventResponse = EventResponse.builder()
+                            .eventId(event.getEventId())
+                            .name(event.getName())
+                            .description(event.getDescription())
+                            .couponId(event.getCouponId())
+                            .maxCount(event.getMaxCount())
+                            .startAt(event.getStartAt())
+                            .endAt(event.getEndAt())
+                            .build();
+                    return eventResponse;
+                }
+        ).toList();
+    }
+
+    public EventResponse getEventDetail(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
+
+        EventResponse eventResponse = EventResponse.builder()
+                .eventId(event.getEventId())
+                .name(event.getName())
+                .description(event.getDescription())
+                .couponId(event.getCouponId())
+                .maxCount(event.getMaxCount())
+                .startAt(event.getStartAt())
+                .endAt(event.getEndAt())
+                .build();
+        return eventResponse;
+    }
 }

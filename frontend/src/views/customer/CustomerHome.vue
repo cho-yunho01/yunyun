@@ -6,6 +6,7 @@ import api from '@/api/axios';
 import LogOut from '@/components/common/LogOut.vue';
     import {Client} from '@stomp/stompjs';
     import SockJS from 'sockjs-client';
+import EventModal from '@/components/event/EventModal.vue';
 
 const storeName = ref("");
 const router = useRouter();
@@ -15,11 +16,9 @@ const id = localStorage.getItem("id");
 
 let stompClient = null;
 
-// const seartchStore = async () => {
-//     const url = `/find/stores/${storeName.value}`
-//     const response = await api.get(url);
-//     storeList.value = response.data
-// }
+const eventList = ref([]);
+
+const eventId = ref();
 
 const searchStore = async () => {
     const url = "/find/stores"
@@ -27,8 +26,15 @@ const searchStore = async () => {
     storeList.value = response.data
 }
 
+const eventResponse = async() => {
+    const url = '/event/customer'
+    const response = await api.get(url);
+    eventList.value = response.data;
+}
+
 onMounted(() => {
     searchStore();
+    eventResponse();
     stompClient = new Client({
         webSocketFactory: () => {
             return new SockJS('http://localhost:8080/ws/order')
@@ -78,6 +84,11 @@ const goStore = (storeId) => {
     router.push(`/store/${storeId}`)
 }
 
+const goEvent = (eventId) => {
+    console.log("EventId 값: "+eventId)
+    router.push(`/event/${eventId}`)
+}
+
 </script>
 
 <template>
@@ -99,6 +110,7 @@ const goStore = (storeId) => {
 
         <div class = "event">
             이벤트 배너
+            <EventModal :events="eventList" @click-event="goEvent" />
         </div>
 
         <div class = "info">

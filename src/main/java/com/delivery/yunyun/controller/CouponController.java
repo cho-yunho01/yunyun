@@ -36,6 +36,12 @@ public class CouponController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{couponId}")
+    public ResponseEntity<CouponResponse> getCouponDetail(@PathVariable Long couponId){
+        CouponResponse response = couponService.getCouponDetail(couponId);
+        return ResponseEntity.ok(response);
+    }
+
     // 갑자기 쿠폰을 삭제하면 문제가 발생할 수 있으므로 잠시 보류
     public ResponseEntity<?> deleteCoupon(@AuthenticationPrincipal Owner owner, @PathVariable Long couponId){
 //        couponService.deleteCoupon(owner, couponId);
