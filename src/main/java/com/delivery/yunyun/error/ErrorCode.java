@@ -80,11 +80,18 @@ public enum ErrorCode {
             "해당 쿠폰을 찾을 수 없습니다."
     ),
 
+    // 이벤트
     EVENT_NOT_FOUND(
             HttpStatus.NOT_FOUND,
             "EVENT_001",
             "해당 이벤트를 찾을 수 없습니다."
-            );
+    ),
+
+    EVENT_LOCK_FAILED(
+            HttpStatus.CONFLICT,
+            "EVENT_002",
+            "이벤트 참여 요청이 많습니다. 잠시 후 다시 시도해주세요."
+    );
 
 
 

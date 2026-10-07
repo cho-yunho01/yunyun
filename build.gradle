@@ -20,6 +20,8 @@ repositories {
 dependencies {
     // Redis
     testImplementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive-test'
+
+    // Redisson
     implementation 'org.redisson:redisson-spring-boot-starter:4.7.0'
 
     // Aop

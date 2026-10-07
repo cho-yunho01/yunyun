@@ -1,11 +1,16 @@
 <script setup>
-import { onMounted,ref } from 'vue';
+import { onMounted,ref,reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import api from '@/api/axios';
 
 const event = ref();
 
 const coupon = ref();
+
+const JoinEventRequest = reactive({
+    eventId : null,
+    couponId : null
+});
 
 const currentRoute = useRoute();
 
@@ -19,6 +24,13 @@ const couponResponse = async() => {
     const url = `/coupon/${event.value.couponId}`
     const response = await api.get(url);
     coupon.value = response.data;
+}
+
+const joinEvent = async() => {
+    const url = `/event/join`
+    JoinEventRequest.couponId = event.value.couponId;
+    JoinEventRequest.eventId = event.value.eventId;
+    await api.post(url, JoinEventRequest);
 }
 
 onMounted(async () => {
@@ -60,7 +72,8 @@ onMounted(async () => {
                 </div>
             </div>
 
-            <button class="coupon-button">
+            <button class="coupon-button"
+            @click="joinEvent">
                 쿠폰 받기
             </button>
         </div>

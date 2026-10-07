@@ -1,21 +1,29 @@
 package com.delivery.yunyun.service;
 
+import com.delivery.yunyun.domain.Customer;
+import com.delivery.yunyun.domain.CustomerCoupon;
 import com.delivery.yunyun.domain.Event;
 import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.dto.request.event.EventRequest;
+import com.delivery.yunyun.dto.request.event.JoinEventRequest;
 import com.delivery.yunyun.dto.response.event.EventResponse;
 import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.error.ErrorCode;
+import com.delivery.yunyun.repository.CustomerCouponRepository;
 import com.delivery.yunyun.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class EventService {
     private final EventRepository eventRepository;
+    private final CustomerCouponRepository customerCouponRepository;
+    private final RedisTemplate<String, Long> redisTemplate;
     
     public void addEvent(Owner owner, EventRequest request) {
         Event event = Event.builder()
@@ -118,5 +126,37 @@ public class EventService {
                 .endAt(event.getEndAt())
                 .build();
         return eventResponse;
+    }
+
+    public void joinEvent(Customer customer, JoinEventRequest request) {
+        String keyName = "event:"+String.valueOf(request.eventId());
+        Long value = redisTemplate.opsForValue().get(keyName);
+        if(value == null){
+            redisTemplate.opsForValue().set(keyName, 1L);
+            saveEventParticipation(customer.getCustomerId(), request);
+        }else{
+            if(value < 10L){
+                redisTemplate.opsForValue().increment(keyName);
+                saveEventParticipation(customer.getCustomerId(), request);
+            }
+            else{
+                System.out.println("인원초과");
+            }
+        }
+
+    }
+
+    public void saveEventParticipation(Long customerId, JoinEventRequest request){
+        Event event = eventRepository.findById(request.eventId())
+                .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
+
+        CustomerCoupon customerCoupon = CustomerCoupon.builder()
+                .customerId(customerId)
+                .couponId(request.couponId())
+                .event(event)
+                .issuedAt(LocalDateTime.now())
+                .build();
+
+        customerCouponRepository.save(customerCoupon);
     }
 }

@@ -1,7 +1,9 @@
 package com.delivery.yunyun.controller;
 
+import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.domain.Owner;
 import com.delivery.yunyun.dto.request.event.EventRequest;
+import com.delivery.yunyun.dto.request.event.JoinEventRequest;
 import com.delivery.yunyun.dto.response.event.EventResponse;
 import com.delivery.yunyun.service.EventService;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +53,12 @@ public class EventController {
     public ResponseEntity<EventResponse> getEventDatail(@PathVariable Long eventId){
         EventResponse eventResponse = eventService.getEventDetail(eventId);
         return ResponseEntity.ok(eventResponse);
+    }
+
+    @PostMapping("/join")
+    public ResponseEntity<?> joinEvent(@AuthenticationPrincipal Customer customer, @RequestBody JoinEventRequest request){
+        eventService.joinEvent(customer,request);
+        return ResponseEntity.ok().build();
     }
 
 
