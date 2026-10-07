@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CustomerCouponRepository extends JpaRepository<CustomerCoupon, Long> {
+    boolean existsByCustomerId(Long customerId);
 }

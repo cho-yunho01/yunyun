@@ -136,8 +136,13 @@ public class EventService {
             saveEventParticipation(customer.getCustomerId(), request);
         }else{
             if(value < 10L){
-                redisTemplate.opsForValue().increment(keyName);
-                saveEventParticipation(customer.getCustomerId(), request);
+                if(!validateUser(customer.getCustomerId())){
+                    redisTemplate.opsForValue().increment(keyName);
+                    saveEventParticipation(customer.getCustomerId(), request);
+                }
+                else{
+                    throw new CustomException(ErrorCode.EVENT_ALREADY_JOINED);
+                }
             }
             else{
                 System.out.println("인원초과");
@@ -158,5 +163,9 @@ public class EventService {
                 .build();
 
         customerCouponRepository.save(customerCoupon);
+    }
+
+    public boolean validateUser(Long customerId){
+        return customerCouponRepository.existsByCustomerId(customerId);
     }
 }

@@ -91,6 +91,12 @@ public enum ErrorCode {
             HttpStatus.CONFLICT,
             "EVENT_002",
             "이벤트 참여 요청이 많습니다. 잠시 후 다시 시도해주세요."
+    ),
+
+    EVENT_ALREADY_JOINED(
+            HttpStatus.CONFLICT,
+            "EVENT_003",
+            "이미 이벤트에 참여하셨습니다."
     );
 
 
