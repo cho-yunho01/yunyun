@@ -131,11 +131,39 @@ public class EventService {
     public void joinEvent(Customer customer, JoinEventRequest request) {
         String keyName = "event:"+String.valueOf(request.eventId());
         Long value = redisTemplate.opsForValue().get(keyName);
+        Event event = eventRepository.findById(request.eventId())
+                .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
+
+        Long count = customerCouponRepository.countByEventEventId(request.eventId());
+
+        // REDIS의 값이 없을 때
         if(value == null){
-            redisTemplate.opsForValue().set(keyName, 1L);
-            saveEventParticipation(customer.getCustomerId(), request);
-        }else{
-            if(value < 10L){
+            // DB에도 값이 없을 때
+            if(count == 0){
+                if(!validateUser(customer.getCustomerId())){
+                    redisTemplate.opsForValue().set(keyName, 1L);
+                    saveEventParticipation(customer.getCustomerId(), request);
+                }
+                else{
+                    throw new CustomException(ErrorCode.EVENT_ALREADY_JOINED);
+                }
+            }
+            // DB에 값이 있을 때
+            else{
+                if(!validateUser(customer.getCustomerId())){
+                    redisTemplate.opsForValue().set(keyName, count);
+                    redisTemplate.opsForValue().increment(keyName);
+                    saveEventParticipation(customer.getCustomerId(), request);
+                }
+                else{
+                    throw new CustomException(ErrorCode.EVENT_ALREADY_JOINED);
+                }
+            }
+
+        }
+        // REDIS의 값이 있을 때
+        else{
+            if(value < Long.valueOf(event.getMaxCount())){
                 if(!validateUser(customer.getCustomerId())){
                     redisTemplate.opsForValue().increment(keyName);
                     saveEventParticipation(customer.getCustomerId(), request);
