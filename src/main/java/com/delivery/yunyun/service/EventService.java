@@ -129,52 +129,57 @@ public class EventService {
     }
 
     public void joinEvent(Customer customer, JoinEventRequest request) {
-        String keyName = "event:"+String.valueOf(request.eventId());
-        Long value = redisTemplate.opsForValue().get(keyName);
         Event event = eventRepository.findById(request.eventId())
                 .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));
 
-        Long count = customerCouponRepository.countByEventEventId(request.eventId());
+        if(isEventActive(event)){
+            String keyName = "event:"+String.valueOf(request.eventId());
+            Long value = redisTemplate.opsForValue().get(keyName);
+            Long count = customerCouponRepository.countByEventEventId(request.eventId());
 
-        // REDIS의 값이 없을 때
-        if(value == null){
-            // DB에도 값이 없을 때
-            if(count == 0){
-                if(!validateUser(customer.getCustomerId())){
-                    redisTemplate.opsForValue().set(keyName, 1L);
-                    saveEventParticipation(customer.getCustomerId(), request);
+            // REDIS의 값이 없을 때
+            if(value == null){
+                // DB에도 값이 없을 때
+                if(count == 0){
+                    if(!validateUser(customer.getCustomerId())){
+                        redisTemplate.opsForValue().set(keyName, 1L);
+                        saveEventParticipation(customer.getCustomerId(), request);
+                    }
+                    else{
+                        throw new CustomException(ErrorCode.EVENT_ALREADY_JOINED);
+                    }
                 }
+                // DB에 값이 있을 때
                 else{
-                    throw new CustomException(ErrorCode.EVENT_ALREADY_JOINED);
+                    if(!validateUser(customer.getCustomerId())){
+                        redisTemplate.opsForValue().set(keyName, count);
+                        redisTemplate.opsForValue().increment(keyName);
+                        saveEventParticipation(customer.getCustomerId(), request);
+                    }
+                    else{
+                        throw new CustomException(ErrorCode.EVENT_ALREADY_JOINED);
+                    }
                 }
+
             }
-            // DB에 값이 있을 때
+            // REDIS의 값이 있을 때
             else{
-                if(!validateUser(customer.getCustomerId())){
-                    redisTemplate.opsForValue().set(keyName, count);
-                    redisTemplate.opsForValue().increment(keyName);
-                    saveEventParticipation(customer.getCustomerId(), request);
+                if(value < Long.valueOf(event.getMaxCount())){
+                    if(!validateUser(customer.getCustomerId())){
+                        redisTemplate.opsForValue().increment(keyName);
+                        saveEventParticipation(customer.getCustomerId(), request);
+                    }
+                    else{
+                        throw new CustomException(ErrorCode.EVENT_ALREADY_JOINED);
+                    }
                 }
                 else{
-                    throw new CustomException(ErrorCode.EVENT_ALREADY_JOINED);
+                    System.out.println("인원초과");
                 }
             }
-
         }
-        // REDIS의 값이 있을 때
         else{
-            if(value < Long.valueOf(event.getMaxCount())){
-                if(!validateUser(customer.getCustomerId())){
-                    redisTemplate.opsForValue().increment(keyName);
-                    saveEventParticipation(customer.getCustomerId(), request);
-                }
-                else{
-                    throw new CustomException(ErrorCode.EVENT_ALREADY_JOINED);
-                }
-            }
-            else{
-                System.out.println("인원초과");
-            }
+            throw new CustomException(ErrorCode.EVENT_NOT_ACTIVE);
         }
 
     }
@@ -195,5 +200,10 @@ public class EventService {
 
     public boolean validateUser(Long customerId){
         return customerCouponRepository.existsByCustomerId(customerId);
+    }
+
+    public boolean isEventActive(Event event){
+        LocalDateTime now = LocalDateTime.now();
+        return !now.isBefore(event.getStartAt()) && !now.isAfter(event.getEndAt());
     }
 }

@@ -97,6 +97,11 @@ public enum ErrorCode {
             HttpStatus.CONFLICT,
             "EVENT_003",
             "이미 이벤트에 참여하셨습니다."
+    ),
+    EVENT_NOT_ACTIVE(
+            HttpStatus.BAD_REQUEST,
+            "EVENT_004",
+            "현재 참여할 수 없는 이벤트입니다."
     );
 
 
