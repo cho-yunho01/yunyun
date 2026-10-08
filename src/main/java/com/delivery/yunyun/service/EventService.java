@@ -1,5 +1,6 @@
 package com.delivery.yunyun.service;
 
+import com.delivery.yunyun.annotation.EventAop;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.domain.CustomerCoupon;
 import com.delivery.yunyun.domain.Event;
@@ -128,6 +129,7 @@ public class EventService {
         return eventResponse;
     }
 
+    @EventAop
     public void joinEvent(Customer customer, JoinEventRequest request) {
         Event event = eventRepository.findById(request.eventId())
                 .orElseThrow(() -> new CustomException(ErrorCode.EVENT_NOT_FOUND));

@@ -9,18 +9,19 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
-
+@Component
 @Aspect
 @RequiredArgsConstructor
 public class EventAsepect {
     private final RedissonClient redissonClient;
 
-    @Around("@Annotation(EventAop)")
+    @Around("@annotation(EventAop)")
     public Object eventAspect(ProceedingJoinPoint jointPoint){
         Object[] orgs = jointPoint.getArgs();
-        JoinEventRequest request = (JoinEventRequest) orgs[0];
+        JoinEventRequest request = (JoinEventRequest) orgs[1];
         String eventId = String.valueOf(request.eventId());
         String key = "event:"+eventId;
 
