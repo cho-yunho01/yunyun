@@ -3,6 +3,7 @@ package com.delivery.yunyun.controller;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
+import com.delivery.yunyun.dto.request.customer.UpdateCustomerRequest;
 import com.delivery.yunyun.dto.response.customer.CustomerInfoResponse;
 import com.delivery.yunyun.dto.response.LoginResponse;
 import com.delivery.yunyun.service.CustomerService;
@@ -27,10 +28,10 @@ public class CustomerController {
     // 2. 사용자 수정
     @PutMapping("/update")
     private ResponseEntity<Void> customerUpdate(
-            @AuthenticationPrincipal Long customerId,
-            @RequestBody CustomerRequest request
+            @AuthenticationPrincipal Customer customer,
+            @RequestBody UpdateCustomerRequest request
     ){
-        customerService.customerUpdate(customerId, request);
+        customerService.customerUpdate(customer.getCustomerId(), request);
         return ResponseEntity.ok().build();
     }
 

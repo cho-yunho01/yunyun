@@ -4,6 +4,7 @@ import com.delivery.yunyun.config.security.JwtTokenProvider;
 import com.delivery.yunyun.domain.Customer;
 import com.delivery.yunyun.dto.request.customer.CustomerLoginRequest;
 import com.delivery.yunyun.dto.request.customer.CustomerRequest;
+import com.delivery.yunyun.dto.request.customer.UpdateCustomerRequest;
 import com.delivery.yunyun.dto.response.customer.CustomerInfoResponse;
 import com.delivery.yunyun.dto.response.LoginResponse;
 import com.delivery.yunyun.error.ErrorCode;
@@ -37,16 +38,9 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public void customerUpdate(Long customerId, CustomerRequest request) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow();
-
-        if(request.name() != null){
-            customer.setName(request.name());
-        }
-
-        if(request.userId() != null){
-            customer.setUserId(request.userId());
-        }
+    public void customerUpdate(Long customerId, UpdateCustomerRequest request) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         if(request.password() != null){
             customer.setPassword(request.password());
