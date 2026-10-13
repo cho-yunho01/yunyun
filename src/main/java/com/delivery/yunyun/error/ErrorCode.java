@@ -71,6 +71,11 @@ public enum ErrorCode {
             "ORDER_001",
             "해당 주문 정보를 찾을 수 없습니다."
     ),
+    INSUFFICIENT_BALANCE(
+            HttpStatus.BAD_REQUEST,
+            "ORDER_002",
+            "잔액이 부족합니다."
+    ),
 
     // 쿠폰
 

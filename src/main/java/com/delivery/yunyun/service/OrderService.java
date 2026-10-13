@@ -28,6 +28,9 @@ public class OrderService {
     public void createOrder(Customer customer, OrderItemListRequest request) {
         System.out.println("OrderItemListRequest의 값: "+request);
 
+        if(customer.getBalance().compareTo(request.totalPrice()) < 0){
+            throw new CustomException(ErrorCode.INSUFFICIENT_BALANCE);
+        }
         Long cartItemId = request.orderItemRequestList().get(0).cartItemId();
 
         CartItem cartItem = cartItemRepository.findById(cartItemId)
@@ -44,6 +47,11 @@ public class OrderService {
                 .build();
 
         orderRepository.save(order);
+
+        // 잔액 차감
+        customer.setBalance(customer.getBalance().subtract(request.totalPrice()));
+
+        customerRepository.save(customer);
 
         request.orderItemRequestList().forEach(
                 item -> {
@@ -71,12 +79,6 @@ public class OrderService {
                 "/topic/owner/order/"+store.getOwnerId(),
                 order.getOrderId()
         );
-
-//        simpMessagingTemplate.convertAndSend(
-//                "/topic/order/"+1,
-//                "전송 성공"
-//        );
-
 
     }
 
@@ -137,6 +139,14 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
 
+        // 환불 처리
+        Customer customer = customerRepository.findById(order.getCustomerId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        customer.setBalance(customer.getBalance().add(order.getTotalPrice()));
+
+        customerRepository.save(customer);
+
         orderRepository.delete(order);
 
         Long customerId = order.getCustomerId();
@@ -159,9 +169,6 @@ public class OrderService {
         List<OrderResponse> orderResponses = orderList.stream().map(
                 order -> {
                     List<OrderItem> orderItemList = order.getOrderItemList();
-//                    for(int i = 0 ;i< orderItemList.size();i++){
-//                        System.out.println("orderItemList의 값 ["+i+"] : "+orderItemList.get(i).getOrderItemId());
-//                    }
                     List<OrderItemResponse> orderItemResponses = orderItemList.stream().map(
                             item -> {
                                 Menu menu = menuRepository.findById(item.getMenuId())

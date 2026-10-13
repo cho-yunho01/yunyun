@@ -24,7 +24,7 @@ const send = () => {
         사용자 이름
         {{ customer.name }} <br />
 
-        사용자 ID
+        사용자 비밀번호
         <input type="password" v-model="customerRequest.password" />
         <br />
 

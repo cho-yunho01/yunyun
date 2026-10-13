@@ -16,26 +16,25 @@ const responseAPI = async () =>{
 }
 
 const updateMode = () => {
-    update.value = true;
+    update.value = false;
 }
 
 const updateRequest = async (data) => {
     const url = "/customer/update"
     const customerRequest = reactive({
-        name : null,
-        userId : null,
         password : data.password,
         balance : data.balance
     })
 
     await api.put(url, customerRequest);
+    update.value = true;
     
 }
 
 
 onMounted( () =>{
     responseAPI(),
-    update.value = false;
+    update.value = true;
 })
 </script>
 
@@ -43,15 +42,15 @@ onMounted( () =>{
     <h1>사용자 정보</h1>
     <div v-if = "update">
         <CustomerDetail :customer = "customer" />
+        <div v-if ="update">
+        <button @click="updateMode">
+            수정하기
+        </button>
+    </div>
     </div>
     <div v-else>
         <UpdateCustomerDetail 
         :customer = "customer"
         @update="updateRequest" />
-    </div>
-    <div v-if ="!update">
-        <button @click="updateMode">
-            수정하기
-        </button>
     </div>
 </template>
