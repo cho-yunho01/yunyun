@@ -92,15 +92,18 @@ const goEvent = (eventId) => {
 </script>
 
 <template>
-    <LogOut />
-    <AppHeader />
-    <div class = "home">
-
-        <div class="search">
-            음식점 검색 창
+    <div class="header">
+        <div class = "logout">
+            <LogOut />
+        </div>
+        <div class = "search">
+            검색 창
             <input type = "text" v-model="storeName">
             <button @click="seartchStore">검색</button>
         </div>
+        </div>
+    <AppHeader />
+    <div>
         <div v-if="stores.length > 0">
             <div v-for="store in stores" :key="store.storeId"
             @click="goStore(store.storeId)">
@@ -109,30 +112,57 @@ const goEvent = (eventId) => {
         </div>
 
         <div class = "event">
-            이벤트 배너
             <EventModal :events="eventList" @click-event="goEvent" />
         </div>
 
-        <div class = "info">
-            <router-link to="/customer/info">사용자 정보</router-link>
+        <div class = "home">
+            <div class = "item">
+                <router-link to="/customer/info">사용자 정보</router-link>
+            </div>
+
+            <div class = "category" v-for="menu in menus" :key = "menu.id">
+                
+            </div>
+
+            <div class="item">
+                <router-link to="/customer/order/status">
+                    배달 현황
+                </router-link>
+            </div>
+
+            <div class = "item">
+                <router-link to ="/cart">
+                    장바구니
+                </router-link>
+            </div>
         </div>
 
-        <div class = "category" v-for="menu in menus" :key = "menu.id">
-            
-        </div>
-
-        <div class="delivery-status">
-            <router-link to="/customer/order/status">
-                배달 현황
-            </router-link>
-        </div>
-
-        <div class = "cart">
-            <router-link to ="/cart">
-                장바구니
-            </router-link>
-        </div>
 
 
     </div>
 </template>
+<style scoped>
+    .home {
+        display : flex;
+        justify-content: space-around;
+    }
+    .item{
+        border : 2px solid black;
+        border-radius: 10px;
+        padding : 20px;
+    }
+    .header {
+        position: relative;
+        display: flex;
+        align-items: center;
+        height: 50px;
+    }
+    .search {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%)
+    }
+    .logout {
+        margin-left: auto;
+    }
+</style>
