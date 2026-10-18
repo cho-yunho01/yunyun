@@ -39,18 +39,34 @@ onMounted( () =>{
 </script>
 
 <template>
-    <h1>사용자 정보</h1>
-    <div v-if = "update">
-        <CustomerDetail :customer = "customer" />
-        <div v-if ="update">
-        <button @click="updateMode">
-            수정하기
-        </button>
-    </div>
-    </div>
-    <div v-else>
-        <UpdateCustomerDetail 
-        :customer = "customer"
-        @update="updateRequest" />
+    <div class ="center">
+        <h1>사용자 정보</h1>
+        <div v-if = "update" class = "user-info">
+            <CustomerDetail :customer = "customer" />
+            <div v-if ="update">
+            <button @click="updateMode">
+                수정하기
+            </button>
+        </div>
+        </div>
+        <div v-else>
+            <UpdateCustomerDetail 
+            :customer = "customer"
+            @update="updateRequest" />
+        </div>
     </div>
 </template>
+
+<style scoped>
+
+.center {
+    display : flex;
+    flex-direction : column;
+    justify-content: center;
+    align-items: center;
+}
+.user-info {
+    border : 2px solid rgb(35, 145, 112);
+    margin : 20px;
+}
+</style>
