@@ -97,28 +97,44 @@ const order = async () => {
 </script>
 
 <template>
+<div class = "cart">
     <div v-for="cart in cartList" :key="cart.cartItemId">
-        <CheckCart @click="select($event, cart)"/>
-        <div class = name>
-            메뉴 이름 : 
-            {{ cart.name }}
-        </div>
-        <div class = price>
-            가격 : 
-            {{ cart.price * cart.quantity }}
-        </div>
-        <div class = "quantity">
-            수량 : 
-            {{ cart.quantity }}
-        </div>
-        <br/>
+        <div class = "menu">
+            <CheckCart 
+            class = "select"
+            @click="select($event, cart)"/>
 
-        <div class = "action">
-            <button @click="openUpdate(cart)">수정</button>
+            <div class = "menu-info">
+                <div class="info-field">
+                    메뉴 이름:
+                </div>
+                <div class="info-field">
+                    가격:
+                </div>
+                <div class="info-field">
+                    수량:
+                </div>
+            </div>
+
+            <div class = "menu-info">
+                <div class="field">
+                    {{ cart.name }}
+                </div>
+                <div class="field">
+                    {{ cart.price * cart.quantity }}
+                </div>
+                <div class="field">
+                    {{ cart.quantity }}
+                </div>
+            </div>
+
+            <div class = "action">
+                <button @click="openUpdate(cart)" class = "update-button">수정</button>
+            </div>
         </div>
     </div>
 
-    <div v-if = "selectList.length > 0">
+    <div class = "buttons" v-if = "selectList.length > 0">
         <button @click = "deleteRequest">삭제</button>
         <button @click = "order">주문</button>
     </div>
@@ -132,5 +148,63 @@ const order = async () => {
     <div v-if="updateStauts">
         <UpdateItem @quantity="updateItem($event)"/>
     </div>
+</div>
     
 </template>
+
+<style scoped>
+.cart{
+    display : flex;
+    flex-direction: column;
+    border : 2px solid black;
+    align-items: center;
+    margin : 20px auto;
+    position: relative;
+    width: fit-content;
+    padding: 60px;
+}
+
+.menu{
+    border : 2px solid rgb(190, 85, 147);
+    position : relative;
+    display: flex;
+    margin : 10px auto;
+    background-color: blanchedalmond;
+}
+.menu-info{
+
+}
+
+.field{
+    margin : 40px 10px;
+}
+
+.info-field{
+    margin : 40px 10px;
+}
+
+.update-button{
+    position : absolute;
+    right: 5px;
+    bottom: 5px;
+}
+
+.select{
+    position : absolute;
+    top: 5px;
+    left : 5px;
+}
+
+.bottom{
+    
+}
+.total{
+    /* position:absolute;
+    left : 50%;
+    transform: translateX(-50%); */
+}
+
+.buttons{
+    margin-left: auto;
+}
+</style>

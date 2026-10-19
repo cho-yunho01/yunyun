@@ -40,10 +40,10 @@ const send = () => {
                 {{ customer.name }}
             </div>
             <div class="field">
-                <input type="password" v-model="customerRequest.password" />
+                <input type="password" v-model="customerRequest.password" class = "input"/>
             </div>
             <div class="field">
-                <input type="number" v-model="customerRequest.balance" />
+                <input type="number" v-model="customerRequest.balance" class = "input"/>
             </div>
              <div class = "field" v-for="role in customer.roles" :key="role">
                 <div>{{ role }}</div>
@@ -77,5 +77,8 @@ const send = () => {
     position: absolute;
     right : 10px;
     bottom : 10px;
+}
+.input {
+    width : 100px;
 }
 </style>
