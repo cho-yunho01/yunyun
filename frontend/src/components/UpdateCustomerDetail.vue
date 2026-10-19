@@ -20,24 +20,62 @@ const send = () => {
 </script>
 
 <template>
-    <div v-if="customer">
-        사용자 이름
-        {{ customer.name }} <br />
+    <div v-if="customer" class = "customer">
+        <div class = "list">
+            <div class = "field">
+                사용자 이름
+            </div>
+            <div class="field">
+                사용자 비밀번호
+            </div>
+            <div class="field">
+                사용자 잔액
+            </div>
+            <div class = "field">
+                권한
+            </div>
+        </div>
+        <div class = "list">
+            <div class="field">
+                {{ customer.name }}
+            </div>
+            <div class="field">
+                <input type="password" v-model="customerRequest.password" />
+            </div>
+            <div class="field">
+                <input type="number" v-model="customerRequest.balance" />
+            </div>
+             <div class = "field" v-for="role in customer.roles" :key="role">
+                <div>{{ role }}</div>
+            </div>
+            
 
-        사용자 비밀번호
-        <input type="password" v-model="customerRequest.password" />
-        <br />
-
-        사용자 잔액
-        <input type="number" v-model="customerRequest.balance" />
-        <br />
-
-        <div v-for="role in customer.roles" :key="role">
-            <div>{{ role }}</div>
         </div>
     </div>
 
     <div>
-        <button @click="send">수정</button>
+        <button class = "update-button" @click="send">수정</button>
     </div>
 </template>
+
+<style scpoed>
+.customer{
+    display : flex;
+}
+
+.list{
+    flex-direction: column;
+}
+.field{
+    margin : 24px;
+}
+.customer-info{
+    border : 2px solid black;
+    margin : 20px;
+}
+.update-button{
+    position: absolute;
+    right : 10px;
+    bottom : 10px;
+}
+</style>

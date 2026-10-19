@@ -43,16 +43,20 @@ onMounted( () =>{
         <h1>사용자 정보</h1>
         <div v-if = "update" class = "user-info">
             <CustomerDetail :customer = "customer" />
-            <div v-if ="update">
+            <div v-if ="update" class = "update-button">
             <button @click="updateMode">
                 수정하기
             </button>
         </div>
         </div>
-        <div v-else>
+        <div v-else class = "user-info">
             <UpdateCustomerDetail 
             :customer = "customer"
-            @update="updateRequest" />
+            @update="updateRequest" 
+            />
+            <!-- <button class = "update-button" @click="updateRequest">
+                수정하기
+            </button> -->
         </div>
     </div>
 </template>
@@ -64,9 +68,21 @@ onMounted( () =>{
     flex-direction : column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    width: fit-content;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 20px;
+    
 }
 .user-info {
     border : 2px solid rgb(35, 145, 112);
     margin : 20px;
+}
+.update-button {
+    position : absolute;
+    right : 10px;
+    bottom: 10px;
 }
 </style>
