@@ -201,7 +201,7 @@ public class EventService {
     }
 
     public boolean validateUser(Long customerId,Long eventId){
-        return customerCouponRepository.existsByCustomerIdAndEventId(customerId,eventId);
+        return customerCouponRepository.existsByCustomerIdAndEventEventId(customerId,eventId);
     }
 
     public boolean isEventActive(Event event){

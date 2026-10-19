@@ -37,7 +37,7 @@ const requestCart = async() => {
 }
 
 const totalPrice = computed(() => {
-    return cartList.value.reduce(
+    return selectList.value.reduce(
         (total, cart) => total + cart.price * cart.quantity, 0
     )
 })
@@ -76,12 +76,19 @@ const deleteRequest = async () => {
 const order = async () => {
 
     const url = "/order/create"
+    const del = "/cart/delete"
 
     const orderItemRequest = selectList.value.map(
         cart => ({
             cartItemId : cart.cartItemId
         })
     )
+
+    const deleteIds = ref([]);
+    deleteIds.value = selectList.value.map(
+        s => s.cartItemId
+    );
+
     const orderItemListRequest = {
         orderItemRequestList: orderItemRequest,
         totalPrice: totalPrice.value
@@ -93,6 +100,13 @@ const order = async () => {
 
     await api.post(url, orderItemListRequest);
 
+    await api.delete(del,{
+        data:{
+            cartItemId : deleteIds.value
+        }
+    })
+
+    
 }
 </script>
 
