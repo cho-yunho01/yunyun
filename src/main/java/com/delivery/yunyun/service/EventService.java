@@ -143,7 +143,7 @@ public class EventService {
             if(value == null){
                 // DB에도 값이 없을 때
                 if(count == 0){
-                    if(!validateUser(customer.getCustomerId())){
+                    if(!validateUser(customer.getCustomerId(),event.getEventId())){
                         redisTemplate.opsForValue().set(keyName, 1L);
                         saveEventParticipation(customer.getCustomerId(), request);
                     }
@@ -153,7 +153,7 @@ public class EventService {
                 }
                 // DB에 값이 있을 때
                 else{
-                    if(!validateUser(customer.getCustomerId())){
+                    if(!validateUser(customer.getCustomerId(),event.getEventId())){
                         redisTemplate.opsForValue().set(keyName, count);
                         redisTemplate.opsForValue().increment(keyName);
                         saveEventParticipation(customer.getCustomerId(), request);
@@ -167,7 +167,7 @@ public class EventService {
             // REDIS의 값이 있을 때
             else{
                 if(value < Long.valueOf(event.getMaxCount())){
-                    if(!validateUser(customer.getCustomerId())){
+                    if(!validateUser(customer.getCustomerId(),event.getEventId())){
                         redisTemplate.opsForValue().increment(keyName);
                         saveEventParticipation(customer.getCustomerId(), request);
                     }
@@ -200,8 +200,8 @@ public class EventService {
         customerCouponRepository.save(customerCoupon);
     }
 
-    public boolean validateUser(Long customerId){
-        return customerCouponRepository.existsByCustomerId(customerId);
+    public boolean validateUser(Long customerId,Long eventId){
+        return customerCouponRepository.existsByCustomerIdAndEventId(customerId,eventId);
     }
 
     public boolean isEventActive(Event event){
