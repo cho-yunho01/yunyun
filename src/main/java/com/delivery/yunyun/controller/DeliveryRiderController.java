@@ -1,7 +1,12 @@
 package com.delivery.yunyun.controller;
 
+import com.delivery.yunyun.domain.DeliveryRider;
+import com.delivery.yunyun.dto.request.deliveryRider.DeliverStatusRequest;
+import com.delivery.yunyun.dto.request.deliveryRider.DeliveryRequest;
 import com.delivery.yunyun.service.DeliveryRiderService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
@@ -9,7 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class DeliveryRiderController {
     private final DeliveryRiderService deliveryRiderService;
 
-    // 1. 조리 완료인 배달 음식을 배달 중으로 변환
+    // 1. 주문상태 변화
+    public ResponseEntity<?> deliveryOrderStatus(@AuthenticationPrincipal DeliveryRider rider, DeliveryRequest request){
+        deliveryRiderService.deliveryOrderStatus(rider, request);
+        return ResponseEntity.ok().build();
+    }
 
-    // 2. 배달 중인 배달 음식을 배달 완료로 변환
+    // 2. 배달원 상태 변화
+    public ResponseEntity<?> deliverStatus(@AuthenticationPrincipal DeliveryRider rider, DeliverStatusRequest request){
+        deliveryRiderService.deliverStatus(rider, request);
+        return ResponseEntity.ok().build();
+    }
 }
