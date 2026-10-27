@@ -50,5 +50,12 @@ public class DeliveryRiderService {
     }
 
     public void deliverStatus(DeliveryRider rider, DeliverStatusRequest request) {
+        if(request.deliveryStatus().equals("AVAILABLE")){
+            rider.setStatus(RiderStatus.AVAILABLE);
+        }
+        else{
+            rider.setStatus(RiderStatus.INACTIVE);
+        }
+        deliveryRiderRepository.save(rider);
     }
 }
