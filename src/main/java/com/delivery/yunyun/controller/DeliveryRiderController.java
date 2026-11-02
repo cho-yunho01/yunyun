@@ -25,4 +25,5 @@ public class DeliveryRiderController {
         deliveryRiderService.deliverStatus(rider, request);
         return ResponseEntity.ok().build();
     }
+    // 3. 배달원 정보 조회
 }
