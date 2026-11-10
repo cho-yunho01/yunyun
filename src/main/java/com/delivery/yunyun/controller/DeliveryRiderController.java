@@ -26,4 +26,11 @@ public class DeliveryRiderController {
         return ResponseEntity.ok().build();
     }
     // 3. 배달원 정보 조회
+
+
+    // 4. 배달원 추가
+
+    // 5. 배달원 수정
+
+    // 6. 배달원 삭제
 }
