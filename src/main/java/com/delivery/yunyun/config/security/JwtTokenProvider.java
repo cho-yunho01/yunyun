@@ -1,6 +1,7 @@
 package com.delivery.yunyun.config.security;
 
 import com.delivery.yunyun.service.CustomerCustomService;
+import com.delivery.yunyun.service.DeliveryRiderCustomService;
 import com.delivery.yunyun.service.OwnerCustomService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -25,6 +26,7 @@ import java.util.List;
 public class JwtTokenProvider {
     private final CustomerCustomService customerCustomService;
     private final OwnerCustomService ownerCustomService;
+    private final DeliveryRiderCustomService deliveryRiderCustomService;
 
     @Value("${spring.jwt.secret}")
     private String secret;
@@ -80,6 +82,9 @@ public class JwtTokenProvider {
         }
         else if(roles.contains("ROLE_OWNER")){
             userDetails = ownerCustomService.loadUserByUsername(userName);
+        }
+        else if(roles.contains("ROLE_DELIVERY")){
+            userDetails = deliveryRiderCustomService.loadUserByUsername(userName);
         }
         else{
             throw new RuntimeException("회원을 찾을 수 없습니다.");
