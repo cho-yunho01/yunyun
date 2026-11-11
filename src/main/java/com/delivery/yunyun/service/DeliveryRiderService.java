@@ -4,8 +4,10 @@ import com.delivery.yunyun.domain.DeliveryRider;
 import com.delivery.yunyun.domain.Order;
 import com.delivery.yunyun.domain.OrderStatus;
 import com.delivery.yunyun.domain.RiderStatus;
+import com.delivery.yunyun.dto.request.deliveryRider.CreateDeliveryRiderRequest;
 import com.delivery.yunyun.dto.request.deliveryRider.DeliverStatusRequest;
 import com.delivery.yunyun.dto.request.deliveryRider.DeliveryRequest;
+import com.delivery.yunyun.dto.request.deliveryRider.UpdateDeliveryRiderRequest;
 import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.error.ErrorCode;
 import com.delivery.yunyun.repository.DeliveryRiderRepository;
@@ -57,5 +59,14 @@ public class DeliveryRiderService {
             rider.setStatus(RiderStatus.INACTIVE);
         }
         deliveryRiderRepository.save(rider);
+    }
+
+    public void deliveryCreate(CreateDeliveryRiderRequest request) {
+    }
+
+    public void deliveryUpdate(DeliveryRider deliveryRider, UpdateDeliveryRiderRequest request) {
+    }
+
+    public void deliveryDelete(DeliveryRider deliveryRider) {
     }
 }
