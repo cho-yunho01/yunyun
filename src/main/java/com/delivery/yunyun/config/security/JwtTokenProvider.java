@@ -1,5 +1,7 @@
 package com.delivery.yunyun.config.security;
 
+import com.delivery.yunyun.error.CustomException;
+import com.delivery.yunyun.error.ErrorCode;
 import com.delivery.yunyun.service.CustomerCustomService;
 import com.delivery.yunyun.service.DeliveryRiderCustomService;
 import com.delivery.yunyun.service.OwnerCustomService;
@@ -87,7 +89,7 @@ public class JwtTokenProvider {
             userDetails = deliveryRiderCustomService.loadUserByUsername(userName);
         }
         else{
-            throw new RuntimeException("회원을 찾을 수 없습니다.");
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
