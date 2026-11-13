@@ -62,11 +62,27 @@ public class DeliveryRiderService {
     }
 
     public void deliveryCreate(CreateDeliveryRiderRequest request) {
+        DeliveryRider rider = DeliveryRider.builder()
+                .userId(request.userId())
+                .password(request.password())
+                .name(request.name())
+                .phoneNumber(request.phoneNumber())
+                .build();
+        deliveryRiderRepository.save(rider);
     }
 
     public void deliveryUpdate(DeliveryRider deliveryRider, UpdateDeliveryRiderRequest request) {
+        if(request.password() != null){
+            deliveryRider.setPassword(request.password());
+        }
+        if(request.phoneNumber() != null){
+            deliveryRider.setPhoneNumber(request.phoneNumber());
+        }
+
+        deliveryRiderRepository.save(deliveryRider);
     }
 
     public void deliveryDelete(DeliveryRider deliveryRider) {
+        deliveryRiderRepository.deleteById(deliveryRider.getId());
     }
 }
