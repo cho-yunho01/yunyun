@@ -8,6 +8,7 @@ import com.delivery.yunyun.dto.request.deliveryRider.CreateDeliveryRiderRequest;
 import com.delivery.yunyun.dto.request.deliveryRider.DeliverStatusRequest;
 import com.delivery.yunyun.dto.request.deliveryRider.DeliveryRequest;
 import com.delivery.yunyun.dto.request.deliveryRider.UpdateDeliveryRiderRequest;
+import com.delivery.yunyun.dto.response.deliveryRider.RiderInfoResponse;
 import com.delivery.yunyun.error.CustomException;
 import com.delivery.yunyun.error.ErrorCode;
 import com.delivery.yunyun.repository.DeliveryRiderRepository;
@@ -84,5 +85,13 @@ public class DeliveryRiderService {
 
     public void deliveryDelete(DeliveryRider deliveryRider) {
         deliveryRiderRepository.deleteById(deliveryRider.getId());
+    }
+
+    public RiderInfoResponse deliverInfo(DeliveryRider rider) {
+        return RiderInfoResponse.builder()
+                .userId(rider.getUserId())
+                .phoneNumber(rider.getPhoneNumber())
+                .status(String.valueOf(rider.getStatus()))
+                .build();
     }
 }

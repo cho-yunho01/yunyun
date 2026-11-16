@@ -5,6 +5,7 @@ import com.delivery.yunyun.dto.request.deliveryRider.CreateDeliveryRiderRequest;
 import com.delivery.yunyun.dto.request.deliveryRider.DeliverStatusRequest;
 import com.delivery.yunyun.dto.request.deliveryRider.DeliveryRequest;
 import com.delivery.yunyun.dto.request.deliveryRider.UpdateDeliveryRiderRequest;
+import com.delivery.yunyun.dto.response.deliveryRider.RiderInfoResponse;
 import com.delivery.yunyun.service.DeliveryRiderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,10 @@ public class DeliveryRiderController {
         return ResponseEntity.ok().build();
     }
     // 3. 배달원 정보 조회
+    public ResponseEntity<RiderInfoResponse> deliveryInfo(@AuthenticationPrincipal DeliveryRider rider){
+        RiderInfoResponse info = deliveryRiderService.deliverInfo(rider);
+        return ResponseEntity.ok(info);
+    }
 
 
     // 4. 배달원 추가
