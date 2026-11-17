@@ -56,6 +56,8 @@ public class CustomerController {
         return ResponseEntity.ok(customerInfoResponse);
     }
 
+    // 6. 가맹점과 1대1대화 기능 추가
+
 
     // 테스트
     @GetMapping("/id")

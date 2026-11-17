@@ -44,4 +44,8 @@ public class OwnerController {
         LoginResponse loginResponse = ownerService.login(request);
         return ResponseEntity.ok(loginResponse);
     }
+
+    // 5. 사용자와 1대1 대화
+
+    // 6. 사용자에게 알림 보내기
 }
