@@ -1,75 +1,58 @@
+
 <script setup>
 import api from "@/api/axios"
-import { onMounted, reactive, ref } from 'vue'
-import { useRouter } from "vue-router";
+import { reactive, ref } from "vue"
+import { useRouter } from "vue-router"
 
-const router = useRouter();
+const router = useRouter()
 
 const loginRequest = reactive({
     userId: "",
     password: ""
 })
 
-const isConvert = ref(true);
-
-const convertAPI = () => {
-    isConvert.value = !isConvert.value
-}
+// 로그인 유형
+const loginType = ref("customer")
 
 const resetLogin = () => {
-    loginRequest.userId = "";
-    loginRequest.password = "";
+    loginRequest.userId = ""
+    loginRequest.password = ""
 }
 
+// 로그인 실패 모달
 const showModal = ref(false)
 
+// 로그인 요청
 const requestAPI = async () => {
-    let url;
+    try {
+        const url = `/${loginType.value}/login`
 
-    if (isConvert.value) {
-        url = "/customer/login";
-    } else {
-        url = "/owner/login";
+        const response = await api.post(url, loginRequest)
+
+        const accessToken = response.data.token
+        const id = response.data.id
+
+        if (!accessToken) {
+            showModal.value = true
+            resetLogin()
+            return
+        }
+
+        localStorage.setItem("accessToken", accessToken)
+        localStorage.setItem("id", id)
+
+        resetLogin()
+
+        // 로그인 유형에 따른 페이지 이동
+        router.push(`/${loginType.value}/home`)
+
+    } catch (error) {
+        console.error("로그인 오류:", error)
+
+        showModal.value = true
+        resetLogin()
     }
-
-    const response = await api.post(url, loginRequest);
-
-    console.log("response 전체:", response);
-    console.log("response.data:", response.data);
-
-    const accessToken = response.data.token;
-    const id = response.data.id;
-
-    if (accessToken === null || !accessToken) {
-        showModal.value = true;
-        resetLogin();
-        return;
-    }
-
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("id", id)
-
-    console.log(
-        "저장된 accessToken:",
-        localStorage.getItem("accessToken")
-    );
-
-    
-    console.log(
-        "저장된 id:",
-        localStorage.getItem("id")
-    );
-
-    resetLogin();
-
-
-    if (isConvert.value) {
-        router.push("/customer/home")
-    } else {
-        router.push("/owner/home")
-    }
-    
-};
+}
 </script>
 
 <template>
@@ -81,85 +64,140 @@ const requestAPI = async () => {
             <!-- 로고 / 제목 -->
             <div class="logo-area">
                 <div class="logo-icon">🍕</div>
+
                 <h1>YUN YUN</h1>
+
                 <p>맛있는 한 끼, 간편하게 배달하세요</p>
             </div>
 
-            <!-- 사용자 / 가맹점 전환 -->
+            <!-- 로그인 유형 선택 -->
             <div class="login-type">
+
                 <button
-                    :class="{ active: isConvert }"
-                    @click="isConvert = true"
+                    :class="{ active: loginType === 'customer' }"
+                    @click="loginType = 'customer'"
                 >
+                    <span>👤</span>
                     사용자
                 </button>
 
                 <button
-                    :class="{ active: !isConvert }"
-                    @click="isConvert = false"
+                    :class="{ active: loginType === 'owner' }"
+                    @click="loginType = 'owner'"
                 >
+                    <span>🏪</span>
                     가맹점
                 </button>
+
+                <button
+                    :class="{ active: loginType === 'delivery' }"
+                    @click="loginType = 'delivery'"
+                >
+                    <span>🛵</span>
+                    배달원
+                </button>
+
             </div>
 
+            <!-- 로그인 제목 -->
             <div class="login-title">
+
                 <h2>
-                    {{ isConvert ? '사용자 로그인' : '가맹점 로그인' }}
+                    {{
+                        loginType === 'customer'
+                            ? '사용자 로그인'
+                            : loginType === 'owner'
+                                ? '가맹점 로그인'
+                                : '배달원 로그인'
+                    }}
                 </h2>
 
                 <p>
-                    {{ isConvert
-                        ? 'YUN YUN에서 맛있는 음식을 만나보세요.'
-                        : '가맹점 관리 페이지에 로그인해주세요.'
+                    {{
+                        loginType === 'customer'
+                            ? 'YUN YUN에서 맛있는 음식을 만나보세요.'
+                            : loginType === 'owner'
+                                ? '가맹점 관리 페이지에 로그인해주세요.'
+                                : '배달 업무를 시작하려면 로그인해주세요.'
                     }}
                 </p>
+
             </div>
 
             <!-- 로그인 입력 -->
             <div class="input-area">
 
                 <div class="input-group">
+
                     <label>아이디</label>
 
                     <div class="input-box">
                         <span>👤</span>
+
                         <input
                             type="text"
                             v-model="loginRequest.userId"
                             placeholder="아이디를 입력하세요"
+                            @keyup.enter="requestAPI"
                         />
                     </div>
+
                 </div>
 
                 <div class="input-group">
+
                     <label>비밀번호</label>
 
                     <div class="input-box">
                         <span>🔒</span>
+
                         <input
                             type="password"
                             v-model="loginRequest.password"
                             placeholder="비밀번호를 입력하세요"
+                            @keyup.enter="requestAPI"
                         />
                     </div>
+
                 </div>
 
             </div>
 
             <!-- 로그인 버튼 -->
-            <button class="login-button" @click="requestAPI">
-                {{ isConvert ? '사용자 로그인' : '가맹점 로그인' }}
+            <button
+                class="login-button"
+                @click="requestAPI"
+            >
+                {{
+                    loginType === 'customer'
+                        ? '사용자 로그인'
+                        : loginType === 'owner'
+                            ? '가맹점 로그인'
+                            : '배달원 로그인'
+                }}
             </button>
 
+            <!-- 회원가입 -->
             <div class="login-footer">
+
                 <span>아직 회원이 아니신가요?</span>
-                <router-link to ="/api/create" class = "signup">회원가입</router-link>
+
+                <router-link
+                    to="/api/create"
+                    class="signup"
+                >
+                    회원가입
+                </router-link>
+
             </div>
 
         </div>
 
         <!-- 로그인 실패 모달 -->
-        <div v-if="showModal" class="modal-overlay">
+        <div
+            v-if="showModal"
+            class="modal-overlay"
+        >
 
             <div class="modal">
 
@@ -215,7 +253,7 @@ const requestAPI = async () => {
 /* 로그인 카드 */
 
 .login-card {
-    width: 430px;
+    width: 460px;
 
     padding: 42px 40px;
 
@@ -272,10 +310,12 @@ const requestAPI = async () => {
     color: #999;
 }
 
-/* 로그인 타입 */
+/* 로그인 유형 */
 
 .login-type {
     display: flex;
+
+    gap: 5px;
 
     padding: 4px;
 
@@ -289,7 +329,13 @@ const requestAPI = async () => {
 .login-type button {
     flex: 1;
 
-    padding: 11px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 11px 4px;
 
     border: none;
 
@@ -297,13 +343,19 @@ const requestAPI = async () => {
 
     border-radius: 9px;
 
-    font-size: 14px;
+    font-size: 13px;
 
     color: #888;
 
     cursor: pointer;
 
     transition: 0.2s;
+
+    white-space: nowrap;
+}
+
+.login-type button span {
+    font-size: 15px;
 }
 
 .login-type button.active {
@@ -474,6 +526,8 @@ const requestAPI = async () => {
     font-weight: 700;
 
     cursor: pointer;
+
+    text-decoration: none;
 }
 
 /* 모달 배경 */
