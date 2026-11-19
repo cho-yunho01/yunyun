@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
     // Redis
     testImplementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive-test'
 

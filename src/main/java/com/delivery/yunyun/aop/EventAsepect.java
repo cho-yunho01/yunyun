@@ -18,12 +18,12 @@ import java.util.concurrent.TimeUnit;
 public class EventAsepect {
     private final RedissonClient redissonClient;
 
-    @Around("@annotation(EventAop)")
+    @Around("@annotation(com.delivery.yunyun.annotation.EventAop)")
     public Object eventAspect(ProceedingJoinPoint jointPoint){
         Object[] orgs = jointPoint.getArgs();
         JoinEventRequest request = (JoinEventRequest) orgs[1];
         String eventId = String.valueOf(request.eventId());
-        String key = "event:"+eventId;
+        String key = "lock:event:"+eventId;
 
         Object result;
         RLock rLock = redissonClient.getLock(key);
