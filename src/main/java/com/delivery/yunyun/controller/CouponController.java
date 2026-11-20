@@ -48,5 +48,9 @@ public class CouponController {
         return ResponseEntity.ok().build();
     }
 
+    // 쿠폰 적용
+
+    // 쿠폰 적용 해제
+
 
 }
